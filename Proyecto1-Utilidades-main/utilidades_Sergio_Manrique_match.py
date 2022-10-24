@@ -1,6 +1,6 @@
 from utilidades_Sergio_Manrique import*
 while True:
-    respuesta = input("Que es lo que quieres hacer (escribe Ayuda para ver la lista de comandos)\n")
+    respuesta = input("Que quieres hacer (escribe Ayuda para ver la lista de comandos)\n")
     match respuesta.split():
         case ["convertir",'euros','a','bitcoin', obj]:
             print(euros_a_bitcoins(int(obj)))
