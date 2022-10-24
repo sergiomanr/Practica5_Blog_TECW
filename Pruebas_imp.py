@@ -18,7 +18,7 @@ mas = [4,5,7]
 lista.extend(mas)
 print(lista)
 '''
-print(nombres[0].upper()
+print(nombres[0].upper())
 # nombres.sort(reverse=True) #ordenar alfabeticamente los elemntos y al reves de forma permanete. En el print es print(sorted(nombres, reverse=true))
 print(nombres)
 #print("""Hola chicos  para dividir el parrafo

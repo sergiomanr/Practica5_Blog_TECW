@@ -40,7 +40,7 @@ class Biblioteca():
         libros_para_borrar = []
         for i in self.inventario:
             if titulo == i.titulo:
-
+                    a =0
             if autor == i.autor :
                 libros_para_borrar.append(i)
             

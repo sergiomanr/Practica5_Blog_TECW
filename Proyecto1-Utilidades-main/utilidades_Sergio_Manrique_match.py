@@ -1,12 +1,11 @@
-from utilidades_Sergio_Manrique.py import*
-productos = []
+from utilidades_Sergio_Manrique import*
 while True:
     respuesta = input("Que quieres hacer (escribe Ayuda para ver la lista de comandos)\n")
     match respuesta.split():
         case ["convertir",'euros','a','bitcoin', obj]:
-            print(euros_a_bitcoin(int(obj)))
+            print(euros_a_bitcoins(int(obj)))
         case ['convertir','bitcoin','a','euros',obj]: 
-            print(bitcoin_a_euros(int(obj)))
+            print(bitcoins_a_euros(int(obj)))
         case ['contar',*palabras]:
             print(contar_vocales(palabras))
         case ['palindromo',*palabra]:
@@ -16,7 +15,7 @@ while True:
         case ['cifrar',*palabras,desplazamiento]:
             print(cifrar(palabras,desplazamiento))
         case ['descifrar',*palabras,desplazamiento]:
-            print(descrifrar(palabras,desplazamiento))
+            print(descifrar(palabras,desplazamiento))
         case ['productos']:
             print(productos())
         case ['producto','nuevo',prod]:
