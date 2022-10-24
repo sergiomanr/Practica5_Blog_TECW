@@ -29,7 +29,7 @@ while True:
     elif respuesta.startswith("descifrar"):
         x = respuesta.split()
         y = int(x[-1])
-        z = x[1:-1])
+        z = x[1:-1]
         z1 = ' '.join(z)
         # print(z1)
         # print(z)
