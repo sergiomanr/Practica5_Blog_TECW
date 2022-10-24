@@ -31,6 +31,7 @@ while True:
         y = int(x[-1])
         z = x[1:-1]
         z1 = ' '.join(z)
+        #esto es una prueba
         # print(z1)
         # print(z)
         print(descifrar(str(z1),y))
