@@ -183,20 +183,26 @@ def ordenar():
   Se ordena la lista de productos, poniendo aquellos con mayor prioridad al principio.
   Los productos ya comprados se colocal al final.
   '''
-  for i in productos:
-    respuesta_con_x = "[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1]
-    respuesta_sin_x = "[ ]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1]
-    for e in range(0,5,-1):
-      if i['prioridad'] == e:
-        print(' '.join(respuesta_con_x))
-
+  contador_prio =5
+  while contador_prio >0:
+    for i in productos:
+      respuesta_con_x = "[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1]
+      respuesta_sin_x = "[ ]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1]
+      if int(i['prioridad']) == contador_prio:
+        contador_prio = contador_prio -1
+        if i['comprado']==True:
+          print(' '.join(respuesta_con_x))
+          continue
+        elif i['comprado']==False:
+          print(' '.join(respuesta_sin_x))
+          continue
 
 def prueba_manual():
     print('Insertando 3 productos')
     insertar('Desmaquillante', 4.5, 'Cosméticos', ('fiesta', 'teatro'), 1)    #fiesta
     insertar('Garbanzos', 0.68, 'Alimentación', ('cocido', 'hummus'), 3)
     insertar('Hierbabuena', 1.5, 'Alimentación', ('cocktails', 'postres'),1)
-    insertar('Purpurina', 20, 'Cosméticos', ('fiesta', 'cocktails'),5)
+    insertar('Purpurina', 20, 'Cosméticos', ('fiesta', 'cocktails'),4)
 
     # seccion('Lista de la compra sin ordenar ni formatear')
     # listar_productos()
@@ -207,14 +213,15 @@ def prueba_manual():
     cambiar_estado(1)
     # listar_productos()
     # seccion('Lista de la compra sin ordenar')
-    mostrar_productos()
+    
+    # mostrar_productos()
 
     # seccion('Lista de la compra filtradas')
     # mostrar_productos(etiquetas=('cocido',))
 
     seccion('Lista de la compra ordenadas')
     ordenar()
-    mostrar_productos()
+    # mostrar_productos()
 
 
 def seccion(texto):
