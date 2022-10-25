@@ -183,34 +183,40 @@ def ordenar():
   Se ordena la lista de productos, poniendo aquellos con mayor prioridad al principio.
   Los productos ya comprados se colocal al final.
   '''
-  contador_prio =5
-  while contador_prio >0:
+  # contador_prio =5
+  for e in range(5,0,-1):
+    for i in productos:
+      # respuesta_con_x = "[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1]
+      respuesta_sin_x = "[ ]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1]
+      if int(i['prioridad']) == e:
+        if i['comprado']==False:
+          print(' '.join(respuesta_sin_x))
+  for e in range(5,0,-1):
     for i in productos:
       respuesta_con_x = "[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1]
-      respuesta_sin_x = "[ ]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1]
-      if int(i['prioridad']) == contador_prio:
-        contador_prio = contador_prio -1
+      if int(i['prioridad']) == e:
         if i['comprado']==True:
           print(' '.join(respuesta_con_x))
-          continue
-        elif i['comprado']==False:
-          print(' '.join(respuesta_sin_x))
-          continue
 
 def prueba_manual():
     print('Insertando 3 productos')
-    insertar('Desmaquillante', 4.5, 'Cosméticos', ('fiesta', 'teatro'), 1)    #fiesta
-    insertar('Garbanzos', 0.68, 'Alimentación', ('cocido', 'hummus'), 3)
-    insertar('Hierbabuena', 1.5, 'Alimentación', ('cocktails', 'postres'),1)
-    insertar('Purpurina', 20, 'Cosméticos', ('fiesta', 'cocktails'),4)
+    # insertar('Desmaquillante', 4.5, 'Cosméticos', ('fiesta', 'teatro'), 1)    #fiesta
+    # insertar('Garbanzos', 0.68, 'Alimentación', ('cocido', 'hummus'), 3)
+    # insertar('Hierbabuena', 1.5, 'Alimentación', ('cocktails', 'postres'),1)
+    # insertar('Purpurina', 20, 'Cosméticos', ('fiesta', 'cocktails'),4)
 
+    insertar('Arroz integral', 0.72, 'Alimentación', ('risotto', 'arroz a la cubana'))
+    insertar('Huevos', 1.20, 'Alimentación', ('arroz a la cubana', 'tortilla'), 1)
+    insertar('Desmaquillante', 4.5, 'Cosméticos', ('fiesta', 'teatro'), 5)
+    ordenar()
+    print(productos[1]["nombre"])
     # seccion('Lista de la compra sin ordenar ni formatear')
     # listar_productos()
 
     # seccion('Lista de la compra sin ordenar ni formatear (con cambio)')
     # print('Cambiando un producto a comprado')
-    cambiar_estado(0)
-    cambiar_estado(1)
+    # cambiar_estado(0)
+    # cambiar_estado(1)
     # listar_productos()
     # seccion('Lista de la compra sin ordenar')
     
