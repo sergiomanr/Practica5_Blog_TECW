@@ -20,7 +20,7 @@ En lecciones posteriores veremos cómo transformar esto en una estructura más e
 '''
 
 productos = []
-
+productos_ordenados = []
 def insertar(nombre, precio, categoria, etiquetas=(), prioridad=3):
   '''Añade un producto nuevo a la lista con los parámetros dados'''
   productos.append({
@@ -184,19 +184,31 @@ def ordenar():
   Los productos ya comprados se colocal al final.
   '''
   # contador_prio =5
+
+  # productos.insert(0,' '.join(respuesta_sin_x))
   for e in range(5,0,-1):
     for i in productos:
       # respuesta_con_x = "[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1]
       respuesta_sin_x = "[ ]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1]
       if int(i['prioridad']) == e:
         if i['comprado']==False:
-          print(' '.join(respuesta_sin_x))
+          productos_ordenados.append(i)
   for e in range(5,0,-1):
     for i in productos:
       respuesta_con_x = "[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1]
       if int(i['prioridad']) == e:
         if i['comprado']==True:
-          print(' '.join(respuesta_con_x))
+          productos_ordenados.append(i)
+  productos.clear()
+  for i in productos_ordenados:
+    productos.append(i)      
+  for i in productos:
+    if i['comprado']==False:
+      print("[ ]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1])
+    elif i['comprado']==True:
+      print("[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1])
+  
+    
 
 def prueba_manual():
     print('Insertando 3 productos')
@@ -209,7 +221,14 @@ def prueba_manual():
     insertar('Huevos', 1.20, 'Alimentación', ('arroz a la cubana', 'tortilla'), 1)
     insertar('Desmaquillante', 4.5, 'Cosméticos', ('fiesta', 'teatro'), 5)
     ordenar()
-    print(productos[1]["nombre"])
+    print(productos[0]["nombre"])
+    print('#'*50)
+    for i in productos:
+      print("[ ]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1])
+    print('-'*50)
+    ordenar()
+    print(productos[0]["nombre"])
+    # print(productos)
     # seccion('Lista de la compra sin ordenar ni formatear')
     # listar_productos()
 
@@ -225,8 +244,8 @@ def prueba_manual():
     # seccion('Lista de la compra filtradas')
     # mostrar_productos(etiquetas=('cocido',))
 
-    seccion('Lista de la compra ordenadas')
-    ordenar()
+    # seccion('Lista de la compra ordenadas')
+    # ordenar()
     # mostrar_productos()
 
 
