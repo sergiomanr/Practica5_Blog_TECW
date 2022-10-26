@@ -55,7 +55,7 @@ def listar_productos():
       print(str,'->',valor)
     else:
       print('\n')
-def mostrar_productos(comprados=True, etiquetas=(), categorias=[]):
+def mostrar_productos(comprados=False, etiquetas=(), categorias=[]):
   '''
   Muestra por pantalla todos los productos con su información. Si un producto ya ha sido comprado, se marca con una x al comienzo.
   La prioridad se indicará mediante el uso de asteriscos (*), es decir, un artículo con prioridad 5 se representará mediante cinco asteriscos (*****).
@@ -77,8 +77,8 @@ def mostrar_productos(comprados=True, etiquetas=(), categorias=[]):
   [ ] Alimentación - Huevos - * - 1.20 € - #arrozalacubana #tortilla
   '''
   for i in productos:  
-    respuesta_con_x = "[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1]
-    respuesta_sin_x = "[ ]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1]
+    respuesta_con_x = "[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1],str(i['comprado'])
+    respuesta_sin_x = "[ ]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1],str(i['comprado'])
     match comprados,len(etiquetas),len(categorias):
       case (True,0,0):
         if i.get('comprado')==True:
@@ -146,7 +146,6 @@ def mostrar_productos(comprados=True, etiquetas=(), categorias=[]):
             if categorias[0] in i['categoria']:        
               if i.get('comprado')==False:
                 print(' '.join(respuesta_sin_x))
-          
 
 def menu():
     '''
@@ -183,81 +182,71 @@ def ordenar():
   Se ordena la lista de productos, poniendo aquellos con mayor prioridad al principio.
   Los productos ya comprados se colocal al final.
   '''
-  # contador_prio =5
-
-  # productos.insert(0,' '.join(respuesta_sin_x))
-  for e in range(5,0,-1):
-    for i in productos:
-      # respuesta_con_x = "[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1]
-      respuesta_sin_x = "[ ]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1]
-      if int(i['prioridad']) == e:
-        if i['comprado']==False:
-          productos_ordenados.append(i)
-  for e in range(5,0,-1):
-    for i in productos:
-      respuesta_con_x = "[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1]
-      if int(i['prioridad']) == e:
-        if i['comprado']==True:
-          productos_ordenados.append(i)
-  productos.clear()
-  for i in productos_ordenados:
-    productos.append(i)      
+  prods = []
   for i in productos:
-    if i['comprado']==False:
-      print("[ ]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1])
-    elif i['comprado']==True:
-      print("[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1])
+    prods.append(i)
+  for i in prods:
+    productos.remove(i)
+  # for e in range(5,0,-1): # la buena caca
+  #   for i in prods:
+  #     if i['comprado'] == False:
+  #       if int(i['prioridad']) == e:
+  #         productos.append(i)
+  #         print("[ ]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1])
+  # else:
+  #   for e in range(5,0,-1):
+  #     for i in prods:
+  #       if i['comprado'] == True:
+  #         if int(i['prioridad']) == e:
+  #           # productos.append(i)
+  #           print("[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1])
+  for e in range(5,0,-1):
+    for i in prods:
+      if i['comprado'] == True:
+        if int(i['prioridad']) == e:
+          productos.append(i)
+          print("[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1])
+  else:
+    for e in range(5,0,-1):
+      for i in prods:
+        if i['comprado'] == False:
+          if int(i['prioridad']) == e:
+            productos.append(i)
+            print("[ ]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1])
   
     
 
 def prueba_manual():
     print('Insertando 3 productos')
-    # insertar('Desmaquillante', 4.5, 'Cosméticos', ('fiesta', 'teatro'), 1)    #fiesta
-    # insertar('Garbanzos', 0.68, 'Alimentación', ('cocido', 'hummus'), 3)
-    # insertar('Hierbabuena', 1.5, 'Alimentación', ('cocktails', 'postres'),1)
-    # insertar('Purpurina', 20, 'Cosméticos', ('fiesta', 'cocktails'),4)
+    insertar('Desmaquillante', 4.5, ('fiesta', 'teatro'), 'Cosméticos', 5)
+    insertar('Garbanzos', 0.68, ('cocido', 'hummus'), 'Alimentación', 3)
+    insertar('Hierbabuena', 1.5, ('cocktails', 'postres'), 'Alimentación', 1)
 
-    insertar('Arroz integral', 0.72, 'Alimentación', ('risotto', 'arroz a la cubana'))
-    insertar('Huevos', 1.20, 'Alimentación', ('arroz a la cubana', 'tortilla'), 1)
-    insertar('Desmaquillante', 4.5, 'Cosméticos', ('fiesta', 'teatro'), 5)
+    seccion('Lista de la compra sin ordenar ni formatear')
+
+    print(productos)
+
+    seccion('Lista de la compra sin ordenar ni formatear (con cambio)')
+    print('Cambiando un producto a comprado')
+    cambiar_estado(0)
+    print(productos)
+
+
+    seccion('Lista de la compra sin ordenar')
+    mostrar_productos()
+
+    seccion('Lista de la compra filtradas')
+    mostrar_productos(etiquetas=('cocido',))
+
+    seccion('Lista de la compra ordenadas')
     ordenar()
-    print(productos[0]["nombre"])
-    print('#'*50)
-    for i in productos:
-      print("[ ]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1])
-    print('-'*50)
-    ordenar()
-    print(productos[0]["nombre"])
-    # print(productos)
-    # seccion('Lista de la compra sin ordenar ni formatear')
-    # listar_productos()
-
-    # seccion('Lista de la compra sin ordenar ni formatear (con cambio)')
-    # print('Cambiando un producto a comprado')
-    # cambiar_estado(0)
-    # cambiar_estado(1)
-    # listar_productos()
-    # seccion('Lista de la compra sin ordenar')
-    
-    # mostrar_productos()
-
-    # seccion('Lista de la compra filtradas')
-    # mostrar_productos(etiquetas=('cocido',))
-
-    # seccion('Lista de la compra ordenadas')
-    # ordenar()
-    # mostrar_productos()
+    mostrar_productos()
 
 
 def seccion(texto):
     print()
     print('-'*10, texto, '-'*40)
     print()
-# prueba_manual()
-# print(productos)
-# cambiar_estado(1)
-# print(productos)
-
 
 if __name__ == "__main__":
     prueba_manual()
