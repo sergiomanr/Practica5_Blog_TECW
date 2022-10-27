@@ -1,3 +1,5 @@
+import re
+
 
 '''
 Módulo de gestión la lista de la compra
@@ -49,13 +51,11 @@ def cambiar_estado(indice):
 def listar_productos():
   '''Devuelve la lista de los productos'''
   for i in productos:
-    # print(productos[i].i)
-    # print(i['nombre'])
     for str,valor in i.items():
       print(str,'->',valor)
     else:
       print('\n')
-def mostrar_productos(comprados=False, etiquetas=(), categorias=[]):
+def mostrar_productos(comprados=True, etiquetas=(), categorias=[]):
   '''
   Muestra por pantalla todos los productos con su información. Si un producto ya ha sido comprado, se marca con una x al comienzo.
   La prioridad se indicará mediante el uso de asteriscos (*), es decir, un artículo con prioridad 5 se representará mediante cinco asteriscos (*****).
@@ -77,17 +77,17 @@ def mostrar_productos(comprados=False, etiquetas=(), categorias=[]):
   [ ] Alimentación - Huevos - * - 1.20 € - #arrozalacubana #tortilla
   '''
   for i in productos:  
-    respuesta_con_x = "[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1],str(i['comprado'])
-    respuesta_sin_x = "[ ]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1],str(i['comprado'])
+    respuesta_con_x = "[x]",i['categoria'],'-',i['nombre'],'-','*'*int(i['prioridad']),'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1]#,str(i['comprado'])
+    respuesta_sin_x = "[ ]",i['categoria'],'-',i['nombre'],'-','*'*int(i['prioridad']),'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1]#,str(i['comprado'])
     match comprados,len(etiquetas),len(categorias):
       case (True,0,0):
         if i.get('comprado')==True:
-          print(' '.join(respuesta_con_x))        
+          print(' '.join(respuesta_con_x))       
         if i.get('comprado')==False:
           print(' '.join(respuesta_sin_x))
       case (False,0,0):
         if i.get('comprado')==False:
-          print("[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'],'#'+i['etiquetas'],str(i['comprado']))
+          print(str(' '.join(respuesta_sin_x)))
       case (True,0,1):
           if categorias[0] in i['categoria']:
             if i.get('comprado')==True:
@@ -110,7 +110,7 @@ def mostrar_productos(comprados=False, etiquetas=(), categorias=[]):
             if i.get('comprado')==True:
               print(' '.join(respuesta_con_x))        
             if i.get('comprado')==False:
-              print(' '.join(respuesta_sin_x))
+                print(' '.join(respuesta_sin_x))
       case (False,1|2,0):
         if len(etiquetas)==2:
           if etiquetas[0] in i['etiquetas'] and etiquetas[1] in i['etiquetas']:        
@@ -119,7 +119,7 @@ def mostrar_productos(comprados=False, etiquetas=(), categorias=[]):
         elif len(etiquetas)==1:
           if etiquetas[0] in i['etiquetas']:       
             if i.get('comprado')==False:
-              print(' '.join(respuesta_sin_x)) 
+                print(' '.join(respuesta_sin_x)) 
       case (True,1|2,1):
         if len(etiquetas)==2:
           if etiquetas[0] in i['etiquetas'] and etiquetas[1] in i['etiquetas']:
@@ -149,33 +149,101 @@ def mostrar_productos(comprados=False, etiquetas=(), categorias=[]):
 
 def menu():
     '''
-    Menú interactivo para modificar la lista de la compra.
-    Acciones:
+#     Menú interactivo para modificar la lista de la compra.
+#     Acciones:
 
-    -  mostrar
-    -  insertar <nombre>; <precio>; <categoria>; <etiquetas en formato tupla separadas por comas>; <prioridad>
-    -  borrar <indice>
-    -  precio <numero>; <precio>
-    -  comprado <numero>
-    -  ayuda
-    -  salir
+#     -  mostrar
+#     -  insertar <nombre>; <precio>; <categoria>; <etiquetas en formato tupla separadas por comas>; <prioridad>
+#     -  borrar <indice>
+#     -  precio <numero>; <precio>
+#     -  comprado <numero>
+#     -  ayuda
+#     -  salir
 
 
-    Por ejemplo:
+#     Por ejemplo:
 
-    #-> mostrar
-    #-> insertar Garbanzos; 0.68; Alimentación; ('cocido', 'hummus'); 3
-    #-> insertar Hierbabuena; 1.5; Alimentación; ('cocktails',);  1
-    #-> mostrar
-    [ ] Alimentación - Garbanzos - *** - 0.68 € - #cocido #hummus
-    [ ] Alimentación - Hierbabuena - * - 1.5 € - #cocktails
-    #-> comprado 0
-    #-> mostrar
-    [x] Alimentación - Garbanzos - *** - 0.68 € - #cocido #hummus
-    [ ] Alimentación - Hierbabuena - * - 1.5 € - #cocktails
+#     #-> mostrar
+#     #-> insertar Garbanzos; 0.68; Alimentación; ('cocido', 'hummus'); 3
+#     #-> insertar Hierbabuena; 1.5; Alimentación; ('cocktails',);  1
+#     #-> mostrar
+#     [ ] Alimentación - Garbanzos - *** - 0.68 € - #cocido #hummus
+#     [ ] Alimentación - Hierbabuena - * - 1.5 € - #cocktails
+#     #-> comprado 0
+#     #-> mostrar
+#     [x] Alimentación - Garbanzos - *** - 0.68 € - #cocido #hummus
+#     [ ] Alimentación - Hierbabuena - * - 1.5 € - #cocktails
 
-    '''
-    raise NotImplementedError
+#     '''
+#     while True:
+#       respuesta = input("Que quieres hacer:\n")
+#       # match respuesta.split(';'):
+#       match re.split(';| ',respuesta):
+#         case ['mostrar']:
+#           mostrar_productos()
+#         case ['insertar',nombre,precio,categoria,*etiquetas,prioridad]:
+#             insertar(nombre,int(precio),categoria,etiquetas,int(prioridad))
+#         case ['borrar',indice]:
+#           borrar(int(indice))
+#         case ['precio',numero,precio]:
+#           actualizar_precio(int(numero), int(precio))
+#         case ['comprado',numero]:
+#           cambiar_estado(int(numero))
+#         case ['ayuda']:
+#           print("""
+# -  mostrar
+# -  insertar <nombre>; <precio>; <categoria>; <etiquetas en formato tupla separadas por comas>; <prioridad>
+# -  borrar <indice>
+# -  precio <numero>; <precio>
+# -  comprado <numero>
+# -  ayuda
+# -  salir
+#           """)
+#         case ['Salir']:
+#           break
+#         case [_]:
+#             print('Escriba un comando correcto')
+    diccionario = {
+      "mostrar" : mostrar_productos,
+      "insertar" : insertar,
+      "ordenar" : ordenar,
+      "actualizar" : actualizar_precio,
+      "comprado" : cambiar_estado
+    }
+    while True:
+      respuesta = input("Escriba un comando:\n")
+      if respuesta == 'ayuda':
+        print("""
+-  mostrar
+-  insertar <nombre>; <precio>; <categoria>; <etiquetas en formato tupla separadas por comas>; <prioridad>
+-  borrar <indice>
+-  precio <numero>; <precio>
+-  comprado <numero>
+-  ayuda
+-  Salir\n""")
+      elif respuesta == 'Salir':
+        break
+      elif diccionario.get(respuesta.split()[0]) != None:
+        match re.split('; | ',respuesta):
+          case ['mostrar']:
+            mostrar_productos()
+          case ['insertar',nombre,precio,categoria,*etiquetas,prioridad]:
+            # print(etiquetas[0].split(','))
+            insertar(nombre,int(precio),categoria,etiquetas[0].split(','),int(prioridad))
+          case ['borrar',indice]:
+            borrar(int(indice))
+          case ['precio',numero,precio]:
+            actualizar_precio(int(numero), int(precio))
+          case ['comprado',numero]:
+            cambiar_estado(int(numero))
+      else:
+        print('Mostrar:'.capitalize(),'\n',mostrar_productos.__doc__.strip(),'\n')
+        print('insertar:'.capitalize(),'\n',insertar.__doc__.strip(),'\n')
+        print('ordenar:'.capitalize(),'\n',ordenar.__doc__.strip(),'\n')
+        print('actualizar:'.capitalize(),'\n',actualizar_precio.__doc__.strip(),'\n')
+        print('comprado:'.capitalize(),'\n',cambiar_estado.__doc__.strip(),'\n')
+
+
 
 def ordenar():
   '''
@@ -202,45 +270,25 @@ def ordenar():
   #           print("[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1])
   for e in range(5,0,-1):
     for i in prods:
-      if i['comprado'] == True:
+      if i['comprado'] == False:
         if int(i['prioridad']) == e:
           productos.append(i)
-          print("[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1])
+          # print("[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1])
   else:
     for e in range(5,0,-1):
       for i in prods:
-        if i['comprado'] == False:
+        if i['comprado'] == True:
           if int(i['prioridad']) == e:
             productos.append(i)
-            print("[ ]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1])
+            # print("[ ]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1])
   
     
 
 def prueba_manual():
-    print('Insertando 3 productos')
-    insertar('Desmaquillante', 4.5, ('fiesta', 'teatro'), 'Cosméticos', 5)
-    insertar('Garbanzos', 0.68, ('cocido', 'hummus'), 'Alimentación', 3)        #el problema esta aqui que esta colocado dif orden
-    insertar('Hierbabuena', 1.5, ('cocktails', 'postres'), 'Alimentación', 1)
-
-    # seccion('Lista de la compra sin ordenar ni formatear')
-
-    # print(productos)
-
-    # seccion('Lista de la compra sin ordenar ni formatear (con cambio)')
-    # print('Cambiando un producto a comprado')
-    # cambiar_estado(0)
-    # print(productos)
-
-
-    # seccion('Lista de la compra sin ordenar')
-    # mostrar_productos()
-
-    # seccion('Lista de la compra filtradas')
-    # mostrar_productos(etiquetas=('cocido',))
-
-    # seccion('Lista de la compra ordenadas')
-    # ordenar()
-    mostrar_productos()
+    # print('Insertando 3 productos')
+    insertar('Garbanzos', 0.68, 'Alimentación', ('cocido', 'hummus'), 3)
+    insertar('Desmaquillante', 4.5,  'Cosméticos',('fiesta', 'teatro'), 5)
+    insertar('Hierbabuena', 1.5,  'Alimentación',('cocktails', 'postre'), 1) #postre
 
 
 def seccion(texto):
@@ -250,4 +298,4 @@ def seccion(texto):
 
 if __name__ == "__main__":
     prueba_manual()
-    # menu()
+    menu() 
