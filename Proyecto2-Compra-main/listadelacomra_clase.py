@@ -20,12 +20,12 @@ producto = {
 En lecciones posteriores veremos cómo transformar esto en una estructura más elegante.
 '''
 
-lista_productos1: list[dict[str,str]] = []
+productos: list[dict[str,str]] = []
 productos_ordenados = []
 
 def insertar(nombre, precio, categoria, etiquetas=(), prioridad=3):
   '''Añade un producto nuevo a la lista con los parámetros dados'''
-  lista_productos1.append({
+  productos.append({
     "nombre": nombre,
     "precio": precio,
     "categoria":categoria,
@@ -37,24 +37,24 @@ def insertar(nombre, precio, categoria, etiquetas=(), prioridad=3):
 def borrar(indice):
   '''Borra de la lista el producto que se encuentra en la posición indicada'''  
   if 'a' in indice or 'e' in indice or 'i' in indice or 'o' in indice or 'u' in indice:
-      for i in lista_productos1:
+      for i in productos:
         if i['nombre'] == indice:
-          del lista_productos1[lista_productos1.index(i)]
+          del productos[productos.index(i)]
   else:
-    del lista_productos1[int(indice)]
+    del productos[int(indice)]
 
 def actualizar_precio(indice, precio):
   '''Actualiza el precio del producto con el índice dado'''
-  lista_productos1[indice]["precio"] = precio
+  productos[indice]["precio"] = precio
 
 def cambiar_estado(indice):
   '''Cambia el estado del producto con el índice dado entre comprado o no'''
-  producto = lista_productos1[indice]
+  producto = productos[indice]
   producto["comprado"] = True
 
 def listar_productos():
   '''Devuelve la lista de los productos'''
-  for i in lista_productos1:
+  for i in productos:
     for str,valor in i.items():
       print(str,'->',valor)
     else:
@@ -82,76 +82,110 @@ def mostrar_productos(comprados=True, etiquetas=(), categorias=[]):
   [ ] Alimentación - Huevos - * - 1.20 € - #arrozalacubana #tortilla
   '''
   print('\n','-'*20,f'Lista de la compra {1}','-'*20,'\n')
-  for i in lista_productos1:  
-    respuesta_con_x = "[x]",i['categoria'],'-',i['nombre'],'-','*'*int(i['prioridad']),'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1],'\t', f'({str(lista_productos1.index(i))})' #,str(i['comprado'])
-    respuesta_sin_x = "[ ]",i['categoria'],'-',i['nombre'],'-','*'*int(i['prioridad']),'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1],'\t', f'({str(lista_productos1.index(i))})' #,str(i['comprado'])
-    match comprados,len(etiquetas),len(categorias):
-      case (True,0,0):
-        if i.get('comprado')==True:
-          print(' '.join(respuesta_con_x))       
-        if i.get('comprado')==False:
-          print(' '.join(respuesta_sin_x))
-      case (False,0,0):
-        if i.get('comprado')==False:
-          print(str(' '.join(respuesta_sin_x)))
-      case (True,0,1):
-          if categorias[0] in i['categoria']:
-            if i.get('comprado')==True:
-              print(' '.join(respuesta_con_x))        
-            if i.get('comprado')==False:
-              print(' '.join(respuesta_sin_x))
-      case (False,0,1):
-          if categorias[0] in i['categoria']:       
-            if i.get('comprado')==False:
-              print(' '.join(respuesta_sin_x))
-      case (True,1|2,0):
-        if len(etiquetas)==2:
-          if etiquetas[0] in i['etiquetas'] and etiquetas[1] in i['etiquetas']:
-            if i.get('comprado')==True:
-              print(' '.join(respuesta_con_x))        
-            if i.get('comprado')==False:
-              print(' '.join(respuesta_sin_x))       
-        elif len(etiquetas)==1:
-          if etiquetas[0] in i['etiquetas']:
-            if i.get('comprado')==True:
-              print(' '.join(respuesta_con_x))        
-            if i.get('comprado')==False:
-                print(' '.join(respuesta_sin_x))
-      case (False,1|2,0):
-        if len(etiquetas)==2:
-          if etiquetas[0] in i['etiquetas'] and etiquetas[1] in i['etiquetas']:        
-            if i.get('comprado')==False:
-              print(' '.join(respuesta_sin_x))       
-        elif len(etiquetas)==1:
-          if etiquetas[0] in i['etiquetas']:       
-            if i.get('comprado')==False:
-                print(' '.join(respuesta_sin_x)) 
-      case (True,1|2,1):
-        if len(etiquetas)==2:
-          if etiquetas[0] in i['etiquetas'] and etiquetas[1] in i['etiquetas']:
-            if categorias[0] in i['categoria']:
-              if i.get('comprado')==True:
-                print(' '.join(respuesta_con_x))        
-              if i.get('comprado')==False:
-                print(' '.join(respuesta_sin_x))       
-        elif len(etiquetas)==1:
-          if etiquetas[0] in i['etiquetas']:
-            if categorias[0] in i['categoria']:
-              if i.get('comprado')==True:
-                print(' '.join(respuesta_con_x))        
-              if i.get('comprado')==False:
-                print(' '.join(respuesta_sin_x))
-      case (False,1|2,1):
-        if len(etiquetas)==2:
-          if etiquetas[0] in i['etiquetas'] and etiquetas[1] in i['etiquetas']:
-            if categorias[0] in i['categoria']:        
-              if i.get('comprado')==False:
-                print(' '.join(respuesta_sin_x))       
-        elif len(etiquetas)==1:
-          if etiquetas[0] in i['etiquetas']:
-            if categorias[0] in i['categoria']:        
-              if i.get('comprado')==False:
-                print(' '.join(respuesta_sin_x))
+  for i in productos: #TODO literal entenderlo
+    hay_etiquetas = False
+    if len(etiquetas) == 0:
+      hay_etiquetas = True
+    else:
+      x = len(etiquetas)
+      for etiqueta in etiquetas:
+        if etiqueta in i.get('etiquetas'):
+          x += 1
+      if x == len(etiquetas):
+        hay_etiquetas = True
+      
+    hay_categorias = False
+    if len(categorias) == 0:
+        hay_categorias = True
+    else:
+        for categoria in categorias:
+          if categoria == i.get('categoria'):
+            hay_categorias = True
+            break
+    if not (comprados == False and i.get('comprado') == True ) and hay_categorias and hay_etiquetas: #TODO
+        respuesta = ''
+        if i.get('comprado') == True:
+          respuesta += '[x]'
+        else:
+          respuesta += '[ ]'
+        respuesta += ' '+i['categoria']+' - '+i['nombre']+' - '+'*'*int(i['prioridad'])+' - '+str(i['precio'])+' - '
+        for etiqueta in i.get('etiquetas'):
+          respuesta += '#'+etiqueta + ' '
+        respuesta += '\t'*2
+        respuesta += f'({str(productos.index(i))})'
+        print(respuesta)
+    
+    
+    # respuesta_con_x = "[x]",i['categoria'],'-',i['nombre'],'-','*'*int(i['prioridad']),'-',str(i['precio']),'€','-','#'+str(i['etiquetas'][0]),'#'+str(i['etiquetas'][1]),'\t', f'({str(productos.index(i))})' #,str(i['comprado'])
+    # respuesta_sin_x = "[ ]",i['categoria'],'-',i['nombre'],'-','*'*int(i['prioridad']),'-',str(i['precio']),'€','-','#'+str(i['etiquetas'][0]),'#'+str(i['etiquetas'][1]),'\t', f'({str(productos.index(i))})' #,str(i['comprado'])
+    # match comprados,len(etiquetas),len(categorias):
+    #   case (True,0,0):
+    #     if i.get('comprado')==True:
+    #       print(' '.join(respuesta_con_x))       
+    #     if i.get('comprado')==False:
+    #       print(' '.join(respuesta_sin_x))
+    #   case (False,0,0):
+    #     if i.get('comprado')==False:
+    #       print(str(' '.join(respuesta_sin_x)))
+    #   case (True,0,1):
+    #       if categorias[0] in i['categoria']:
+    #         if i.get('comprado')==True:
+    #           print(' '.join(respuesta_con_x))        
+    #         if i.get('comprado')==False:
+    #           print(' '.join(respuesta_sin_x))
+    #   case (False,0,1):
+    #       if categorias[0] in i['categoria']:       
+    #         if i.get('comprado')==False:
+    #           print(' '.join(respuesta_sin_x))
+    #   case (True,1|2,0):
+    #     if len(etiquetas)==2:
+    #       if etiquetas[0] in i['etiquetas'] and etiquetas[1] in i['etiquetas']:
+    #         if i.get('comprado')==True:
+    #           print(' '.join(respuesta_con_x))        
+    #         if i.get('comprado')==False:
+    #           print(' '.join(respuesta_sin_x))       
+    #     elif len(etiquetas)==1:
+    #       # print(i['etiquetas'])
+    #       if etiquetas[0] in i['etiquetas']:
+    #         if i.get('comprado')==True:
+    #           print(' '.join(respuesta_con_x))        
+    #         if i.get('comprado')==False:
+    #             print(' '.join(respuesta_sin_x))
+    #   case (False,1|2,0):
+    #     if len(etiquetas)==2:
+    #       if etiquetas[0] in i['etiquetas'] and etiquetas[1] in i['etiquetas']:        
+    #         if i.get('comprado')==False:
+    #           print(' '.join(respuesta_sin_x))       
+    #     elif len(etiquetas)==1:
+    #       if etiquetas[0] in i['etiquetas']:       
+    #         if i.get('comprado')==False:
+    #             print(' '.join(respuesta_sin_x)) 
+    #   case (True,1|2,1):
+    #     if len(etiquetas)==2:
+    #       if etiquetas[0] in i['etiquetas'] and etiquetas[1] in i['etiquetas']:
+    #         if categorias[0] in i['categoria']:
+    #           if i.get('comprado')==True:
+    #             print(' '.join(respuesta_con_x))        
+    #           if i.get('comprado')==False:
+    #             print(' '.join(respuesta_sin_x))       
+    #     elif len(etiquetas)==1:
+    #       if etiquetas[0] in i['etiquetas']:
+    #         if categorias[0] in i['categoria']:
+    #           if i.get('comprado')==True:
+    #             print(' '.join(respuesta_con_x))        
+    #           if i.get('comprado')==False:
+    #             print(' '.join(respuesta_sin_x))
+    #   case (False,1|2,1):
+    #     if len(etiquetas)==2:
+    #       if etiquetas[0] in i['etiquetas'] and etiquetas[1] in i['etiquetas']:
+    #         if categorias[0] in i['categoria']:        
+    #           if i.get('comprado')==False:
+    #             print(' '.join(respuesta_sin_x))       
+    #     elif len(etiquetas)==1:
+    #       if etiquetas[0] in i['etiquetas']:
+    #         if categorias[0] in i['categoria']:        
+    #           if i.get('comprado')==False:
+    #             print(' '.join(respuesta_sin_x))
 
 def menu():
     '''
@@ -216,6 +250,8 @@ def menu():
             insertar(nombre,float(precio),categoria,etiquetas,int(prioridad))
           case ['borrar',indice]:
             borrar(indice) 
+          case ['ordenar']:
+            ordenar()
           case ['precio',numero,precio]:
             actualizar_precio(int(numero), int(precio))
           case ['comprado',numero]:
@@ -232,23 +268,21 @@ def ordenar():
   Se ordena la lista de productos, poniendo aquellos con mayor prioridad al principio.
   Los productos ya comprados se colocal al final.
   '''
-  prods = []
-  for i in lista_productos1:
-    prods.append(i)
+  prods = productos[:]
   for i in prods:
-    lista_productos1.remove(i)
+    productos.remove(i)
   for e in range(5,0,-1):
     for i in prods:
-      if i['comprado'] == False:
+      if i['comprado'] == True:
         if int(i['prioridad']) == e:
-          lista_productos1.append(i)
+          productos.append(i)
           # print("[x]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1])
   else:
     for e in range(5,0,-1):
       for i in prods:
-        if i['comprado'] == True:
+        if i['comprado'] == False:
           if int(i['prioridad']) == e:
-            lista_productos1.append(i)
+            productos.append(i)
             # print("[ ]",i['categoria'],'-',i['nombre'],'-','*'*i['prioridad'],'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1])
 
 def prueba_manual():
@@ -256,7 +290,8 @@ def prueba_manual():
     insertar('Garbanzos', 0.68, 'Alimentación', ('cocido', 'hummus'), 3)
     insertar('Desmaquillante', 4.5,  'Cosméticos',('fiesta', 'teatro'), 5)
     insertar('Hierbabuena', 1.5,  'Alimentación',('cocktails', 'postre'), 1) #postre
-
+    # cambiar_estado(0)
+    # mostrar_productos()
 def seccion(texto):
     print()
     print('-'*10, texto, '-'*40)

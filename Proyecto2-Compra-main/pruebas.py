@@ -114,6 +114,9 @@ def mostrar_productos(comprados=True, etiquetas=(), categorias=[]):
   for i in listas_abiertas[x]:  
     respuesta_con_x = "[x]",i['categoria'],'-',i['nombre'],'-','*'*int(i['prioridad']),'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1],'\t', f'({str(listas_abiertas[x].index(i))})' #,str(i['comprado'])
     respuesta_sin_x = "[ ]",i['categoria'],'-',i['nombre'],'-','*'*int(i['prioridad']),'-',str(i['precio']),'€','-','#'+i['etiquetas'][0],'#'+i['etiquetas'][1],'\t', f'({str(listas_abiertas[x].index(i))})' #,str(i['comprado'])
+    
+    
+    
     match comprados,len(etiquetas),len(categorias):
       case (True,0,0):
         if i.get('comprado')==True:
@@ -303,6 +306,8 @@ def prueba_manual():
     insertar('Garbanzos', 0.68, 'Alimentación', ('cocido', 'hummus'), 3)
     insertar('Desmaquillante', 4.5,  'Cosméticos',('fiesta', 'teatro'), 5)
     insertar('Hierbabuena', 1.5,  'Alimentación',('cocktails', 'postre'), 1) #postre
+    print('ahora con fiesta')
+    mostrar_productos(etiquetas='fiesta')
 
 def seccion(texto):
     print()
@@ -311,6 +316,6 @@ def seccion(texto):
 
 if __name__ == "__main__":
     prueba_manual()
-    menu()
+    # menu()
     # cambio_lista()
     print('Estas en lista número 1')
