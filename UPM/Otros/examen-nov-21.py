@@ -14,16 +14,24 @@ class Lector:
 
 class Biblioteca():
     def __init__(self):
-        self.inventario = []
-        self.reservas = {}
+        self.inventario:dict[str, dict[list[Libro]]] = {}
+        self.reservas: dict[str, list[Reserva]]= {}
     def catalogar(self,titulo,autor,cantidad):
         self.titulo = titulo
         self.autor = autor
         self.cantidad = cantidad
-        for i in range(cantidad-1): 
-            self.inventario.append(Libro(self.titulo,self.autor,True))
-        else:
-            self.inventario.append(Libro(self.titulo,self.autor,False))
+        hay_libro = 0
+        for i in self.inventario:
+            if i.titulo == titulo:
+                hay_libro = 1
+        if hay_libro == 1:    
+            for i in range(cantidad): 
+                self.inventario.append(Libro(self.titulo,self.autor,True))
+        elif hay_libro == 0:
+            for i in range(cantidad-1): 
+                self.inventario.append(Libro(self.titulo,self.autor,True))
+            else:
+                self.inventario.append(Libro(self.titulo,self.autor,False))
     '''def catalogar(self,titulo,autor,cantidad):
         self.titulo = titulo
         self.autor = autor
@@ -40,11 +48,11 @@ class Biblioteca():
         libros_para_borrar = []
         for i in self.inventario:
             if titulo == i.titulo:
-                    a =0
+                libros_para_borrar.append(i)
             if autor == i.autor :
                 libros_para_borrar.append(i)
             
-        for libro in libros_para_borrar:
+        for libro in set(libros_para_borrar):
             self.inventario.remove(libro)
 
     def retirar(self,titulo:str):
@@ -116,5 +124,40 @@ librito.lista()
 
 
 
-
-
+class Biblioteca2:
+    def __init__(self):
+        self.inventario = {}
+        self.reservas = {}
+    def catalogar(self, titulo, autor, cantidad):
+        if autor not in self.inventario:
+            self.inventario[autor]= {}
+        libros = self.inventario.get(autor)
+        if titulo not in libros:
+            libros[titulo] = []
+        libros_objetivo: list[Libro] = libros.get(titulo)
+        cantidad = len(libros_objetivo)
+        if cantidad == 0:
+            libros_objetivo.append(titulo= titulo,autor= autor, prestable= False)
+            for i in range(cantidad-1):
+                libros_objetivo.append(titulo= titulo,autor= autor, prestable= True)
+        else:
+            for i in range(cantidad):
+                libros_objetivo.append(titulo= titulo,autor= autor, prestable= True)
+    def descatalogar(self, autor:str, titulo:str = None):
+        if autor in self.inventario:
+            if not titulo:
+                del self.inventario[autor]
+            else:
+                libros_autor = self.inventario.get(autor)
+            if titulo in libros_autor:
+                del libros_autor[titulo]
+    def retirar(self, titulo: str):
+        for autor in self.inventario:
+            for titulo_libro in autor:
+                if titulo_libro == titulo:
+                    lista_libros = autor.get(titulo_libro)
+                    if len(lista_libros)> 1:
+                        return lista_libros.pop()
+        return None
+        
+            

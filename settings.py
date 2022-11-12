@@ -1,14 +1,51 @@
-def es_palindromo(texto):
+class Receta:
+  def __init__(self, nombre:str, ingredientes: dict[str, str] = {}, pasos: list[str] = []):
+    self.nombre = nombre
+    self.ingredientes = ingredientes
+    self.pasos = pasos
+class LibroRecetas:
+    def __init__(self, nombre: str, recetas: list[Receta] = [], descripción: str = None):
+      self.nombre = nombre
+      self.recetas = recetas
+      self.descripción = descripción
+    def listar(self)-> str:
+      print('Listado de Recetas')
+      contador = 1
+      for i in self.recetas:
+        print('Receta número',str(contador)+':',i.nombre)
+        contador +=1
+    def mostrar_ingredientes(self, número: int):
+      print('Ingredientes para',self.recetas[número].nombre)
+      caca = self.recetas[número].ingredientes
+      for clave,valor in caca.items():
+          print(clave+':', valor)
+    def mostra_pasos(self, número: int):
+      print('Pasos para',self.recetas[número].nombre)
+      print(self.recetas[número].pasos)
+      x = 0
+      for i in self.recetas[número].pasos:
+        print('Paso',str(x)+':',self.recetas[número].pasos[x])
+        x +=1
 
-  '''Detecta si un texto es palíndromo o no'''
-  a = list(texto)
-  while ' ' in a:
-    a.remove(' ')
-  print(a)
-  if a == a[::-1]:
-    print(True)
-  else:
-    print(False)
-es_palindromo("ella te da detalle")
-# print(list('ella te da detalle'))
-# print(list("ella te da detalle")[::-1])
+r1 = Receta('Patatas fritas',
+  {'Patatas': '300 gramos',
+    'Aceite': '300 ml'},
+  ['Pelar y cortar las patatas',
+    'Calentar el aceite en una sarten',
+    'Freir las patatas hasta el punto deseado']
+  )
+r2 = Receta('Café en cafetera italiana',{'Café molido': '50 gramos','Agua': '300 ml'},
+  [
+'Poner el agua en el compartimento inferior (depósito) de la cafetera',
+'Poner el café en el compartimento medio y cerrar la cafetera',
+'Dejar que hierva el agua',
+'Retirar del fuego cuando no quede agua en el depósito de la cafetera'
+]
+)
+libro = LibroRecetas(
+  nombre='recetario',
+  recetas=[r1,r2],
+  descripción='Libro de cocina para sobrevivir en el día a día'
+)
+libro.mostra_pasos(0)
+

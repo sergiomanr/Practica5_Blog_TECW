@@ -5,12 +5,12 @@ import io
 from contextlib import contextmanager
 
 from unittest import mock, skipIf
-from habilidades import MenuPrompt,Habilidad,Divisas,Menu,MenuComas,MenuPreguntas
+from habilidades_conmejora import MenuPrompt,Habilidad,Divisas,Menu,MenuComas,MenuPreguntas
 
 SUBCOMANDOS = False
 
 try:
-    from habilidades import HabilidadSubcomandos, ListaDeLaCompra
+    from habilidades_conmejora import HabilidadSubcomandos, ListaDeLaCompra
     print("Se va a comprobar el apartado de Subcomandos")
     print("Para evitarlo, comenta las clases relacionadas con ese apartado.")
     SUBCOMANDOS = True
@@ -59,9 +59,9 @@ class TestHabilidades(unittest.TestCase):
 
     def test_divisas(self):
         usd2euro = Divisas('usd2euro', tasa=0.85)
-        assert round(85 - usd2euro.invocar(100)) == 0
+        assert round(85 - usd2euro._invocar(100)) == 0
         euro2usd = Divisas('euro2usd', tasa=1/0.85)
-        assert round(117.65 - euro2usd.invocar(100)) == 0
+        assert round(117.65 - euro2usd._invocar(100)) == 0
 
     def test_menu(self):
 
@@ -96,9 +96,9 @@ class TestHabilidades(unittest.TestCase):
             assert line in out
 
     def test_listadelacompra(self):
-        from habilidades import ListaDeLaCompra
+        from habilidades_conmejora import ListaDeLaCompra
         t = ListaDeLaCompra(nombre='mi lista de la compra')
-        t.invocar('insertar', 'Cebollas')
+        t._invocar('insertar', 'Cebollas')
         assert 'Cebollas' in t.productos
 
     @skipIf(not SUBCOMANDOS, "No se ha desarrollado el apartado de subcomandos")
