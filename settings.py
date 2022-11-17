@@ -47,5 +47,9 @@ libro = LibroRecetas(
   recetas=[r1,r2],
   descripción='Libro de cocina para sobrevivir en el día a día'
 )
-libro.mostra_pasos(0)
+if __name__ == '__main__':
+  r2.ingredientes = {'Café molido': '55 gramos','Agua': '300 ml'} 
+  print(r2.ingredientes)
+  print(libro.recetas[libro.recetas.index(r1)].ingredientes)
+  # libro.mostra_pasos(0)
 

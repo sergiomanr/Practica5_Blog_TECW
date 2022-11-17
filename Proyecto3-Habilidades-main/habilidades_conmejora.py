@@ -339,13 +339,14 @@ def prueba_menu_subcomandos():
     m = Menu(habilidades)
     c = MenuComas(habilidades)
     p = MenuPrompt(habilidades,prompt='$$')
+    p.lanzar()
     pr = MenuPreguntas(habilidades)
     lis = ListaDeLaCompra(nombre='mi lista de la compra')
-    lis._invocar('insertar', 'Cebollas')
-    print(lis.productos)
-    m.emular('usd2euro 100')
-    m.emular('ayuda usd2euro')
-    m.emular('ayuda listadelacompra')
+    # lis._invocar('insertar', 'Cebollas')
+    # print(lis.productos)
+    # m.emular('usd2euro 100')
+    # m.emular('ayuda usd2euro')
+    # m.emular('ayuda listadelacompra')
     
 
    

@@ -160,16 +160,16 @@ def mejor_alumno(lista):
                 return i
 print(mejor_alumno([Alumno("Luis", 6), Alumno("Marta", 9), Alumno("Juan", 4)]).nombre)
 
-# if __name__ == '__main__':
-#     empleados = {
-#         'pedro':12,
-#         'ana':23,
-#         'irene':12,
-#         'paco': 65}
-    # numeros = [4,6,7,11]
-    # ordenar_edades()
-    # saber_numero_primo(numeros)
-    # mago = Mago(Hogwarts.Gryffindor)
-    # mago.print_casa()
-    # print(casa.value)
+if __name__ == '__main__':
+    empleados = {
+        'pedro':12,
+        'ana':23,
+        'irene':12,
+        'paco': 65}
+    numeros = [4,6,7,11]
+    ordenar_edades()
+    saber_numero_primo(numeros)
+    mago = Mago(Hogwarts.Gryffindor)
+    mago.print_casa()
+    print(casa.value)
 
