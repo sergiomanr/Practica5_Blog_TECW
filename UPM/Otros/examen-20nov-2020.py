@@ -7,19 +7,18 @@ class Paquete:
         self.id = id
         self.productos = []
         self.peso_max = peso_max
-    def cabe(self,producto):
-        return self.peso() + producto.peso <= self.peso_max
+    def cabe(self,producto: Producto):
+        return self.peso()  <= self.peso_max
     def meter(self,producto):
         self.productos.append(producto)
     def peso(self):
         return sum([producto.peso for producto in self.productos])
 class Almacen:
     def __init__(self):
-        self.stock: dict[str, list[producto]] = {}
-        hola =0
+        self.stock: dict[str, list[Producto]] = {}
     def reponer(self,nombre:str, peso:int, cantidad:int):
         if nombre not in self.stock: #mira los conjuntos de claves del dic stock
-            self.stock[nombre]: list[producto] =[]
+            self.stock[nombre]: list[Producto] =[]
         for i in range(cantidad):
             objeto = Producto(nombre,peso)
             self.stock[nombre].append(objeto)

@@ -18,8 +18,8 @@ while True:
 # def make_album(artits_name,album_name,number_of_songs=None):
 #     artits_name = input("\nWrite the artists name: ")
 #     album_name = input("\nWrite the album's name: ")
-# while True:
-#     if number_of_songs:
+# whirue:
+#     if number_of_songs
 #         album_info = f"{artits_name},{album_name},{number_of_songs}"
 #     else:
 #         album_info = f"{artits_name},{album_name}"

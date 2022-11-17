@@ -47,11 +47,19 @@ class MesesAño(Enum):
     def __init__(self,mes):
                 self.mes = mes
     def que_mes_es(self):
-                return self.name 
+                return self.value 
     def cacota(self):
-        return self.name
+        x = 'Hace '
+        y = ['calor','frio', 'humedad','tormentas','chuvascos']
+        j = x + random.choice(y)
+        return j
 mes_eleg: MesesAño = MesesAño.ABRIL
-print(MesesAño.FEBRERO.que_mes_es())
+import random
+random.choice
+print(MesesAño.SEPTIEMBRE.que_mes_es())
 print(MesesAño.OCTUBRE.que_mes_es())
 print(MesesAño.cacota(mes_eleg))
-print(mes_eleg.mes)
+print(mes_eleg.value)
+for i in MesesAño:
+    print(i.name,':', i.value,'-->',i.cacota())
+print((MesesAño._member_names_))    
