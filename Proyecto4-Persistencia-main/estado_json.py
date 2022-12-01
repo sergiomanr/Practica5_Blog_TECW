@@ -6,15 +6,15 @@ FICHERO_JSON = "estado.json"
 
 def leer_estado_json(fichero=FICHERO_JSON):
     if not os.path.exists(fichero):
-        raise NotImplementedError
+        return None
 
     with open(fichero, "r") as f:
-        raise NotImplementedError
+        return json.load(f)
 
-
+ 
 def guardar_estado_json(estado, fichero=FICHERO_JSON):
     with open(fichero, "w") as f:
-        raise NotImplementedError
+        return json.dump(estado, f)
 
 
 if __name__ == "__main__":

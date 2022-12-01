@@ -17,7 +17,7 @@ class Habilidad:
         # texto = self.descripcion or self.invocar.__doc__
         texto = self._invocar.__doc__
         print(texto)
-
+ 
 class Saludar(Habilidad):
     '''Saludar, dando el nombre indicado en el self.nombre'''
     def invocar(self):
@@ -148,8 +148,8 @@ class MenuComas(Menu):
     
 
 class MenuPrompt(Menu):
-    def __init__(self, habilidades: list, prompt):
-        super().__init__(habilidades)
+    def __init__(self, *args, prompt=">", **kwargs):
+        super().__init__(*args, **kwargs)
         self.prompt = prompt
     def emular(self, linea):
         '''Ejecuta una línea, mostrando por pantalla el comando'''
@@ -157,7 +157,7 @@ class MenuPrompt(Menu):
     def lanzar(self):
         '''Recibe instrucciones del usuario en bucle.'''
         while True:
-            linea = input(f'{self.prompt} ')
+            linea = input(self.prompt + ' ')
             if self.ejecutar(linea):
                 break
 

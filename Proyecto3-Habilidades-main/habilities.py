@@ -61,7 +61,7 @@ class ListaDeLaCompra(HabilidadSubcomandos):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.productos = []
-
+ 
     def subcomandos(self):
         return {
             "insertar": self.insertar,

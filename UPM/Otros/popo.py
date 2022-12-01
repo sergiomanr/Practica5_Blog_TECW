@@ -1,6 +1,6 @@
 class Dog:
     """May god forgive ya"""
-    def __init__(self,name,age):
+    def __init__(self,name: str,age: float):
         self.names = name #lo que va después de el self.___ es lo que fuera se llama
         self.age = age
     def sit(self):
@@ -9,7 +9,7 @@ class Dog:
         print(self.names,"is too old to roll over because he is",self.age)
 # my_dog = Dog("Jerry",27)
 # dog2 = Dog("Amanda",12)
-# print("My dawg name is",my_dog.names.capitalize())
+# print("My dawg name is",my_dog.names.capitalize())s
 # my_dog.roll_over()
 # dog2.sit()
 
