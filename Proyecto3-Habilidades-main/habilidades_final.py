@@ -55,7 +55,7 @@ class HabilidadSubcomandos(Habilidad):
 
 
 # Descomentar para desarrollar el apartado de Subcomandos
-class ListaCompraP2(HabilidadSubcomandos):
+class ListaDeLaCompra(HabilidadSubcomandos):
     """Gestión muy simple de lista de la compra"""
 
     def __init__(self, *args, **kwargs):
@@ -222,31 +222,28 @@ def prueba_menu_subcomandos():
         Divisas('euro2bitcoin', tasa=1/49929.38),
         # Contador('contarvocales', 'contador de vocales'),
         # DetectorPalindromos('detectorpalindromo','Detecta si una palabra es palindroma'),
-        ListaCompraP2('listacompraP2', 'Gestión de la lista de la compra'),
+        ListaDeLaCompra('listadelacompra', 'Gestión de la lista de la compra'),
         Divisas('usd2euro', tasa=0.85, descripcion='Conversión de dólares a euros')
         ]
-    # habilidades = [
-    #         Divisas('usd2euro', tasa=0.85, descripcion='Conversión de dólares a euros'),
-    #         Divisas('euro2usd', tasa=1/0.85, descripcion='Conversión de euros a dólares'),
-    #     ]
-    # m = Menu(habilidades)
-    # print('#' * 10, 'Ayudas')
-    # m.emular('ayuda')
-    # m.emular('ayuda usd2euro')
-    # m.emular('ayuda noexiste')
-    # print('\n','#' * 10, 'Conversión')
-    # m.emular('bitcoin2euro 3')
-    # m.emular('euro2bitcoin 30000')
-    # print('\n','#' * 10, 'Palíndromo')
-    # m.emular('detectorpalindromo anitalavalatina')
-    # m.emular('detectorpalindromo albertoesgordo')
-    # print('\n','#' * 10, 'listacompraP2')
-    # m.emular('listacompraP2 insertar "plátanos canarios"')
-    # m.emular('listacompraP2 insertar Pimientos')
-    # m.emular('listacompraP2 listar')
-    # m.emular('listacompraP2 borrar 0')
-    # m.emular('listacompraP2 listar')
-    mp = MenuPreguntas(habilidades=habilidades)
-    mp.lanzar()
+    m = Menu(habilidades)
+    m.emular('ayuda')
+    m.emular('ayuda noexiste')
+    # m.emular('listadelacompra insertar "plátanos canarios" 5.25 Alimentación "frutas,postre"')
+    m.emular('listadelacompra insertar Pimientos')
+    m.emular('listadelacompra listar')
+    m.emular('listadelacompra borrar 0')
+    m.emular('listadelacompra listar')
+    m.emular('bitcoin2euro 230000')
+    lis = ListaDeLaCompra(habilidades)
+    m.emular('listadelacompra insertar Pimientos')
+    lis.invocar('insertar','platano')
+    lis.invocar('insertar','pan')
+    lis.invocar('insertar','jamon')
+    lis.invocar('listar')
+    lis.invocar('cantidad')
+    lis.invocar('borrar', 0)
+    lis.listar()
+    # lis.decir_subcomandos()
+    
 if __name__ == '__main__':
     prueba_menu_subcomandos()

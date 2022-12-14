@@ -112,24 +112,24 @@ class TestPersistencia(unittest.TestCase):
         assert "fernando" in recovered["contactos"]
         assert recovered["contactos"]["fernando"] == 6692312432
 
-    @skipUnlessImplemented("AlmacenBackup")
-    def test_persistencia_backup(self):
-        """Debería haber una copia cada vez que se guarda"""
-        interno = AlmacenJSON(fichero=TEST_JSON_FILE)
-        p = AlmacenBackup(interno)
-        p.guardar({"paso": 0})
-        p.guardar({"paso": 1})
-        p.guardar({"paso": 2})
-        assert len(p.copias) == 2
-        copias = glob("*_copia_*")
-        assert len(copias) == len(p.copias)
+    # @skipUnlessImplemented("AlmacenBackup")
+    # def test_persistencia_backup(self):
+    #     """Debería haber una copia cada vez que se guarda"""
+    #     interno = AlmacenJSON(fichero=TEST_JSON_FILE)
+    #     p = AlmacenBackup(interno)
+    #     p.guardar({"paso": 0})
+    #     p.guardar({"paso": 1})
+    #     p.guardar({"paso": 2})
+    #     assert len(p.copias) == 2
+    #     copias = glob("*_copia_*")
+    #     assert len(copias) == len(p.copias)
 
-        recuperados = []
-        for copia in copias:
-            recuperados.append(AlmacenJSON(fichero=copia).leer())
-        pasos = list(x["paso"] for x in recuperados)
-        assert 0 in pasos
-        assert 1 in pasos
+    #     recuperados = []
+    #     for copia in copias:
+    #         recuperados.append(AlmacenJSON(fichero=copia).leer())
+    #     pasos = list(x["paso"] for x in recuperados)
+    #     assert 0 in pasos
+    #     assert 1 in pasos
 
     def test_productos_excepciones(self):
         """La lista de la compra lanza excepciones"""
@@ -169,15 +169,15 @@ class TestPersistencia(unittest.TestCase):
         t2 = ListaDeLaCompraAlmacenada(nombre="mis productos", almacen=p)
         assert "probando" in t2.productos
 
-    @skipUnlessImplemented("MultiAlmacen")
-    def test_productos_multi(self):
-        a1 = EnMemoria()
-        a2 = EnMemoria()
-        multi = MultiAlmacen([a1, a2])
-        t = ListaDeLaCompraAlmacenada(nombre="mis productos", almacen=multi)
-        t.invocar("insertar", "probando")
-        assert "probando" in a1.leer("productos")
-        assert "probando" in a2.leer("productos")
+    # @skipUnlessImplemented("MultiAlmacen")
+    # def test_productos_multi(self):
+    #     a1 = EnMemoria()
+    #     a2 = EnMemoria()
+    #     multi = MultiAlmacen([a1, a2])
+    #     t = ListaDeLaCompraAlmacenada(nombre="mis productos", almacen=multi)
+    #     t.invocar("insertar", "probando")
+    #     assert "probando" in a1.leer("productos")
+    #     assert "probando" in a2.leer("productos")
 
 
 if __name__ == "__main__":

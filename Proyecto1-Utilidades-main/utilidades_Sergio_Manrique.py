@@ -104,9 +104,9 @@ def descifrar(cifrado: str,desplazamiento:int)->str:
         else:
             letras_unir.append(e)
     return ''.join(letras_unir)
-
-'''Menú de selección'''
-while True:
+def menu():
+  '''Menú de selección'''
+  while True:
     respuesta = input("Que quieres hacer (escribe AYUDA para ver la lista de comandos)\n")
     if respuesta.startswith("convertir euros"):
         x = respuesta.split()
@@ -129,16 +129,12 @@ while True:
         y = int(x[-1])
         z = x[1:-1]
         z1 = ' '.join(z)
-        # print(z1)
-        # print(z)
         print(cifrar(str(z1),y))
     elif respuesta.startswith("descifrar"):
         x = respuesta.split()
         y = int(x[-1])
         z = x[1:-1]
         z1 = ' '.join(z)
-        # print(z1)
-        # print(z)
         print(descifrar(str(z1),y))
     elif respuesta.startswith("productos"):
         productos()
@@ -168,3 +164,5 @@ while True:
     else:
         print("\nIntroduce un comando correcto\n")
 #intentar hacer con el match-case
+if __name__ == '__main__':
+  menu()

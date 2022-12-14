@@ -3,7 +3,7 @@ import sys
 import io
 from contextlib import contextmanager
 
-from listadelacomra_clase import *
+from listadelacompra import *
 
 
 @contextmanager

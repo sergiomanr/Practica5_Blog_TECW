@@ -5,12 +5,12 @@ import io
 from contextlib import contextmanager
 
 from unittest import mock, skipIf
-from habilidades_conmejora import MenuPrompt,Habilidad,Divisas,Menu,MenuComas,MenuPreguntas
+from habilidades import MenuPrompt,Habilidad,Divisas,Menu,MenuComas,MenuPreguntas
 
 SUBCOMANDOS = False
 
 try:
-    from habilidades_conmejora import HabilidadSubcomandos, ListaDeLaCompra
+    from habilidades import HabilidadSubcomandos, ListaDeLaCompra
     print("Se va a comprobar el apartado de Subcomandos")
     print("Para evitarlo, comenta las clases relacionadas con ese apartado.")
     SUBCOMANDOS = True
@@ -96,7 +96,7 @@ class TestHabilidades(unittest.TestCase):
             assert line in out
 
     def test_listadelacompra(self):
-        from habilidades_conmejora import ListaDeLaCompra
+        from habilidades import ListaDeLaCompra
         t = ListaDeLaCompra(nombre='mi lista de la compra')
         t._invocar('insertar', 'Cebollas')
         assert 'Cebollas' in t.productos
@@ -144,7 +144,7 @@ class TestHabilidades(unittest.TestCase):
             out = out.getvalue()
 
     def test_menu_prompt(self):
-        stub_stdin(self, 'salir\n')
+        stub_stdin(self, 'salir\r\n')
         m = MenuPrompt([], prompt='$')
         with redirected() as out:
             m.lanzar()
@@ -152,14 +152,15 @@ class TestHabilidades(unittest.TestCase):
 
     def test_menu_comas(self):
         m = MenuComas([])
-        stub_stdin(self, 'ayuda,noexiste\nsalir\n')
+        stub_stdin(self, 'ayuda,noexiste\r\nsalir\r\n')
         with redirected() as out:
             m.lanzar()
             assert 'Habilidad no encontrada: noexiste' in out.getvalue()
 
     def test_menu_preguntas(self):
         m = MenuPreguntas([])
-        stub_stdin(self, 'ayuda\nnoexiste\n\nsalir\n\n')
+        #stub_stdin(self, 'ayuda\r\nnoexiste\r\n\r\nsalir\r\n')
+        stub_stdin(self, 'ayuda\n\rnoexiste\n\rsalir\n\r')
         with redirected() as out:
             m.lanzar()
             assert 'Habilidad no encontrada: noexiste' in out.getvalue()

@@ -1,8 +1,0 @@
-0.5: enumerado 
-2.5:
-1 punto de metodos 
-hacer pruebas 1 punto
-
-7:
-clase 
-6 puntos de metodos y 1 de pruebas

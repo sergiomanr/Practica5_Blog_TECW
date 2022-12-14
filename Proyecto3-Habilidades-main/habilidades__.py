@@ -1,6 +1,5 @@
 import shlex
 import sys
-import inspect
 class Habilidad:
     '''Abstracción del concepto de habilidad en un asistente.'''
 
@@ -8,16 +7,16 @@ class Habilidad:
         self.nombre = nombre
         self.descripcion = descripcion or self.__doc__
 
-    def _invocar(self):
+    def invocar(self):
         '''Invocar la habilidad. No acepta parámetros'''
         print('Se ha invocado la habilidad',self.nombre)
 
-    def _ayuda(self):
+    def ayuda(self):
         '''Devolver la descripción de la habilidad'''
         # texto = self.descripcion or self.invocar.__doc__
-        texto = self._invocar.__doc__
+        texto = self.invocar.__doc__
         print(texto)
- 
+
 class Saludar(Habilidad):
     '''Saludar, dando el nombre indicado en el self.nombre'''
     def invocar(self):
@@ -41,11 +40,11 @@ class Divisas(Habilidad):
         super().__init__(*args, **kwargs)
         self.tasa = tasa
 
-    def _invocar(self, cantidad):
+    def invocar(self, cantidad):
         '''Convertir una cantidad la divisa original a la divisa objetivo'''
         return round(float(cantidad)*self.tasa,2)
 class Contador(Habilidad):
-    def _invocar(self, palabra):
+    def invocar(self, palabra):
         '''Devuelve el número de vocales que tiene el texto dado.'''
         vocales = 0
         if type(palabra) == list:
@@ -55,7 +54,7 @@ class Contador(Habilidad):
                 vocales += 1
         return vocales
 class DetectorPalindromos(Habilidad):
-    def _invocar(self, palabra):
+    def invocar(self, palabra):
         '''Detecta si un texto es palíndromo o no'''
         if type(palabra) == list:
             palabra = ''.join(palabra)
@@ -96,7 +95,7 @@ class Menu:
         if habilidad not in self.habilidades:
             print(f'Habilidad no encontrada: {habilidad}')
             return
-        self.habilidades[habilidad]._ayuda()
+        self.habilidades[habilidad].ayuda()
 
     def lanzar(self):
         '''Recibe instrucciones del usuario en bucle.'''
@@ -119,13 +118,13 @@ class Menu:
         if comando in self.habilidades:
             if comando == 'listadelacompra':
                 if len(args) >1: #funcion accedida a través de el m = Menu(habilidades) m.emular('listadelacompra insertar "cebolla"')
-                    self.habilidades.get(comando)._invocar(args[0], args[1])
+                    self.habilidades.get(comando).invocar(args[0], args[1])
                 else:
-                    self.habilidades.get(comando)._invocar(comando, args)
+                    self.habilidades.get(comando).invocar(comando, args)
             elif '2' in comando:
-                print(self.habilidades.get(comando)._invocar(int(args[0])))
+                print(self.habilidades.get(comando).invocar(int(args[0])))
             else:
-                print(self.habilidades.get(comando)._invocar(args[0]))
+                print(self.habilidades.get(comando).invocar(args[0]))
         elif comando.startswith('ayuda'):
             if len(args) == 0:
                 self.ayuda(habilidad=comando)
@@ -148,16 +147,18 @@ class MenuComas(Menu):
     
 
 class MenuPrompt(Menu):
-    def __init__(self, *args, prompt=">", **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, habilidades: list, prompt):
+        super().__init__(habilidades)
         self.prompt = prompt
     def emular(self, linea):
         '''Ejecuta una línea, mostrando por pantalla el comando'''
+        # print(self.prompt, linea)
         self.ejecutar(linea)
     def lanzar(self):
         '''Recibe instrucciones del usuario en bucle.'''
         while True:
-            linea = input(self.prompt + ' ')
+            linea = input(f'{self.prompt} ')
+            # print(linea)
             if self.ejecutar(linea):
                 break
 
@@ -244,7 +245,7 @@ class HabilidadSubcomandos(Habilidad):
         super().__init__(nombre, descripcion)
         self.diccionario = {}
         # self.subcomandos = {}
-    def _subcomandos(self):
+    def subcomandos(self):
         '''
         Devuelve un diccionario de subcomandos a funciones.
         
@@ -259,21 +260,15 @@ class HabilidadSubcomandos(Habilidad):
 
         }
 
-    def _invocar(self, subcomando, *args):
+    def invocar(self, subcomando, *args):
         raise NotImplementedError
 
-    def _ayuda(self):
+    def ayuda(self):
         if True:
             print('Comando:\t', self.nombre)
             print('Descripción:\t', self.descripcion)
             print('Subcomandos:\n')
-    def _decir_subcomandos(self):
-        for i in self.habilidades:
-            if inspect.ismethod(i):
-                print(i)        
-        # return self.ismethod(self.ayuda())
             # Muestra información de cada uno de los subcomandos
-
 # Descomentar para desarrollar el apartado de subcomandos
 
 class ListaDeLaCompra(HabilidadSubcomandos):
@@ -282,15 +277,19 @@ class ListaDeLaCompra(HabilidadSubcomandos):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     self.productos = []
-    self.subcomandos = {'insertar': self.insertar,
+
+  def subcomandos(self):
+    return {
+      'insertar': self.insertar,
       'borrar': self.borrar,
       'listar': self.listar,
-      'cantidad': self.cantidad,}
+      'cantidad': self.cantidad,
+      }
 
-  def insertar(self, producto, precio=0, categoria='Alimentación', etiquetas="", prioridad="1"):
+  def insertar(self, producto):
     '''Insertar un producto nuevo'''
-    # self.productos.append(producto, float(precio), categoria, etiquetas.split(','), int(prioridad))
     self.productos.append(producto)
+
   def listar(self):
     '''Mostrar el listado de productos'''
     if len(self.productos) == 0:
@@ -307,25 +306,26 @@ class ListaDeLaCompra(HabilidadSubcomandos):
     '''Mostrar el número de productos en la lista'''
     return len(self.productos)
     
-  def _invocar(self, subcomando, *args):
+  def invocar(self, subcomando, *args):
         if type(args[0]) == str:
-            # self.subcomandos().get(subcomando)(args[0]) #Funciona con el ejemplo de m = Menu(habilidades) m.emular('listadelacompra insertar "cebolla"')
-            self.subcomandos[subcomando](args[0])
+            self.subcomandos().get(subcomando)(args[0]) #Funciona con el ejemplo de m = Menu(habilidades) m.emular('listadelacompra insertar "cebolla"')
         else:
+            # args[0][0] != None:
             accion = args[0][0]
             if accion == 'listar':
                 return self.listar()
-  def _ayuda(self):
+  def ayuda(self):
     if True:
         print('Comando:\t', self.nombre)
         print('Descripción:\t', self.descripcion)
         print('Subcomandos:')  
-        for clv,vlr in self.subcomandos.items():
+        for clv,vlr in self.subcomandos().items():
             print(clv+':',vlr.__doc__)
-  def decir_subcomandos(self):
-        for i in inspect.getmembers(ListaDeLaCompra):
-            if inspect.isfunction(i[1]) and not(i[0].startswith('_')): #Solo selecciona las que son funciones(porque no metodos?) y las que no empiezan por '_' por lo que solo las no privadas
-                print(i[0])
+            
+class ListaCompraP2(HabilidadSubcomandos):
+    def invocar(self):
+        a = 0
+
 
 def prueba_menu_subcomandos():
     habilidades = [
@@ -333,20 +333,20 @@ def prueba_menu_subcomandos():
         Divisas('euro2bitcoin', tasa=1/49929.38),
         Contador('contarvocales', 'contador de vocales'),
         DetectorPalindromos('detectorpalindromo','Detecta si una palabra es palindroma'),
-        ListaDeLaCompra('listadelacompra', 'Gestión de la lista de la compra'),
-        Divisas('usd2euro', tasa=0.85, descripcion='Conversión de dólares a euros')
-        ]
+        ListaDeLaCompra('listadelacompra', 'Gestión de la lista de la compra')
+    ]
     m = Menu(habilidades)
     c = MenuComas(habilidades)
     p = MenuPrompt(habilidades,prompt='$$')
-    p.lanzar()
     pr = MenuPreguntas(habilidades)
-    lis = ListaDeLaCompra(nombre='mi lista de la compra')
-    # lis._invocar('insertar', 'Cebollas')
-    # print(lis.productos)
-    # m.emular('usd2euro 100')
-    # m.emular('ayuda usd2euro')
-    # m.emular('ayuda listadelacompra')
+    # p.lanzar()
+    m.emular('ayuda')
+    m.deshabilitar('bitcoin2euro')
+    m.emular('listadelacompra insertar cacas')
+    m.añadir_habilidad('ListaDeLaCompra')
+    m.emular('ayuda')
+    m.emular('listadelacompra listar')
+    # pr.emular('ayuda noexiste')
     
 
    
