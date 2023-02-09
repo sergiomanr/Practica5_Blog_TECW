@@ -1,4 +1,4 @@
-class Receta:
+'''class Receta:
   def __init__(self, nombre:str, ingredientes: dict[str, str] = {}, pasos: list[str] = []):
     self.nombre = nombre
     self.ingredientes = ingredientes
@@ -53,3 +53,17 @@ if __name__ == '__main__':
   print(libro.recetas[libro.recetas.index(r1)].ingredientes)
   # libro.mostra_pasos(0)
 
+'''
+import json
+
+class SensorTemperatura:
+	def __init__(self, identificador:int, ciudad:str ='Desconocida')->None:
+		self.indentificador = identificador
+		self.ciudad = ciudad
+		self.historial: dict[str,float] = {}
+def carga_sensor(nombre:str)->SensorTemperatura:
+	with open(nombre, mode='r', encoding='utf8') as f:
+		diccionario_json = json.load(f)
+		return SensorTemperatura(identificador = diccionario_json['identificador'], ciudad=diccionario_json['ciudad'])
+
+    

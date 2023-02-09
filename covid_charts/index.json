@@ -1,0 +1,5 @@
+{
+   "confirmed": "./datos/confirmed.csv",
+   "deaths": "./datos/deaths.csv",
+   "recovered": "./datos/recovered.csv"
+}

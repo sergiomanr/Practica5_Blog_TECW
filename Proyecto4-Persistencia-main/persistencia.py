@@ -2,16 +2,11 @@ import pickle
 import os
 import csv
 import json
-import inspect
-import shutil
-from typing import Any
-from datetime import datetime
 from habilidades_pro4 import HabilidadSubcomandos
 
 FICHERO_PICKLE = "estado.pickle"
 FICHERO_JSON = "estado.json"
 FICHERO_CSV = 'estado.csv'
-TEST_JSON_FILE = 'testeo.json'
 
 def leer_estado_pickle(fichero=FICHERO_PICKLE):
     if not os.path.exists(fichero):
@@ -116,19 +111,6 @@ class AlmacenCSV:
                 csv_writer.writerow(diccioanrio)
 
 
-# class MultiAlmacen(Almacen):
-#     def __init__(self, almacenes):
-#         # self.almacenes = almacenes
-#         raise NotImplementedError
-#     def guardar(self, estado):
-#         # for i in self.almacenes:
-#         #     guardar_estado_pickle(estado=estado)
-#         raise NotImplementedError
-#     def leer(self, *args, **kwargs):
-#         leer_estado_pickle()
-#         raise NotImplementedError
-
-
 class ListaDeLaCompra(HabilidadSubcomandos):
     """Gestión de lista de la compra que incluye excepciones"""
 
@@ -147,7 +129,6 @@ class ListaDeLaCompra(HabilidadSubcomandos):
     def insertar(self, producto):
         """Insertar un producto nuevo, lanzando una excepción si el producto es nulo o contiene un string vacío"""
         if producto == None or producto == '':
-            # ErrorProductoError(producto).problema()
             raise Exception       
         else:
             self.productos.append(producto)
@@ -164,35 +145,17 @@ class ListaDeLaCompra(HabilidadSubcomandos):
             raise Exception
         else:
             del self.productos[numero]
-        # try:
-        #     del self.productos[numero]
-        # except Exception as e:
-        #     print('El número',numero,'no está en la lista','\nError tipo',f'"{e}"')
 
     def cantidad(self):
         """Mostrar el número de productos en la lista"""
         return len(self.productos)
-'''
-class ErrorProductoError(Exception):
-    def __init__(self, producto):
-        self.producto = producto
-    def problema(self)->str:
-        if self.producto == None:
-            print('Se ha introducido un producto None')
-        elif self.producto == '':
-            print('Se ha introducido un valor vacio')'''
 
 class ListaDeLaCompraAlmacenada(ListaDeLaCompra):
     def __init__(self, *args, almacen= EnMemoria, **kwargs):
         super().__init__(*args, **kwargs)
         self.almacen = almacen
-        if self.almacen.__doc__ == None: #selecciona la clase json y no EnMemoria
-        # if type(self.almacen) == '__main__.AlmacenJSON': 
-            if self.almacen.leer():
+        if self.almacen.leer():
                 self.productos = self.almacen.leer()['lista1']
-        else:
-            if self.almacen.estado.keys():
-                self.productos = self.almacen.estado['lista1']
 
     def insertar(self, producto):
         super().insertar(producto)
@@ -208,26 +171,13 @@ def comprobar_tamaño(fichero):
     else:
         return 0
 
-class ListaContactos(HabilidadSubcomandos):
-    def guardar_contacto(self, informacion: dict[str,dict[Any,Any]]):
-        guardar_estado_json(informacion)
-
 if __name__ == '__main__':
-    # p = EnMemoria()
+    p = AlmacenJSON(FICHERO_JSON)
     # print(p.estado)
-    # t = ListaDeLaCompraAlmacenada(nombre="mis productos", almacen=p)
-    # t.invocar("insertar", "probando")
-    # # t.insertar('probando')
-    # t2 = ListaDeLaCompraAlmacenada(nombre="mis productos", almacen=p)
-    # print(t.productos)
-    # print(t2.productos)
-    # print(p.estado)
-    leer_estado_json(fichero=TEST_JSON_FILE)
-    p = AlmacenJSON(fichero=TEST_JSON_FILE)
-    # print(type())
     t = ListaDeLaCompraAlmacenada(nombre="mis productos", almacen=p)
     t.invocar("insertar", "probando")
-    print(t.productos)
-    p = AlmacenJSON(fichero=TEST_JSON_FILE)
+    t.insertar('probando')
     t2 = ListaDeLaCompraAlmacenada(nombre="mis productos", almacen=p)
-    print(t2.productos) 
+    print(t.productos)
+    print(t2.productos)
+    

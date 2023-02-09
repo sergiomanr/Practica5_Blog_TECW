@@ -1,5 +1,6 @@
 import os
-
+import tqdm
+import math 
 FICHERO = "estado.txt"
 
 
@@ -15,7 +16,11 @@ def guardar_estado(estado, fichero=FICHERO):
     with open(fichero, "w") as f:
         # Usar el protocolo más alto posible en esta versión
         f.write(str(estado))
-
+for i in range(1,100000):
+    contador = leer_estado()
+    print('Vale','\t->',i,float(contador))
+    contador += 2/i*math.log(i)
+    guardar_estado(contador)
 # for i in range(1,20):
 #     contador = leer_estado()
 #     print(f"El contador vale {contador}")
@@ -26,7 +31,7 @@ def guardar_estado(estado, fichero=FICHERO):
 #     guardar_estado(contador)
 # # else:
 # #     print(2**(1/2))
-contador = leer_estado()
-print(f'El contador vale {contador}')
-contador += 1
-guardar_estado(contador)
+# contador = leer_estado()
+# print(f'El contador vale {contador}')
+# contador += 1
+# guardar_estado(contador)

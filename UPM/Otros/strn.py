@@ -153,4 +153,3 @@ def cifrar(texto: str, desplazamiento: int)-> str:
     print(''.join(letras_unir))
 cifrar('HOLA MUNDO', 20)
 cifrar('hola', 20)
-a

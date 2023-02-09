@@ -1,0 +1,52 @@
+{
+    "Alumnos": [
+        {
+            "Nombre": "Johan-luctios",
+            "ID": 321321431,
+            "Classes": [
+                "Chemistry",
+                "Algebra",
+                "Music",
+                "telekinesis"
+            ],
+            "Grades": [
+                51,
+                21,
+                84,
+                99
+            ]
+        },
+        {
+            "Nombre": "Luci",
+            "ID": 325684890,
+            "Classes": [
+                "Calculis",
+                "Algebra",
+                "Running_around",
+                "telekinesis"
+            ],
+            "Grades": [
+                19,
+                69,
+                20,
+                73
+            ]
+        },
+        {
+            "Nombre": "jaf",
+            "ID": 848932560,
+            "Classes": [
+                "Algebra",
+                "Calculis",
+                "telekinesis",
+                "Running_around"
+            ],
+            "Grades": [
+                14,
+                43,
+                35,
+                64
+            ]
+        }
+    ]
+}
