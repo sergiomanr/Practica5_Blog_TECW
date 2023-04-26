@@ -13,7 +13,7 @@ fig = plt.figure(figsize=(12,9))
 #            resolution = 'l')
 pais = input('Que país quiere que esté centrado:\n--->')
 coords = []
-with open('./datos/paises.json',mode='r',encoding='utf8') as f:
+with open('covid_charts/datos/paises.json',mode='r',encoding='utf8') as f:
     coords = json.load(f)[pais]
 m = Basemap(projection='nsper',lon_0=coords[0],lat_0=coords[1],satellite_height=3000*1000,resolution='l')
 
@@ -35,7 +35,7 @@ m.fillcontinents(color='lightgreen', lake_color='aqua')
 # m.shadedrelief()
 
 
-with open('./datos/confirmed.csv',mode='r',encoding='utf8') as f:
+with open('covid_charts/datos/confirmed.csv',mode='r',encoding='utf8') as f:
     reader = csv.reader(f)
     next(reader)
     for i in reader:
