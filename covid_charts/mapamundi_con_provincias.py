@@ -15,7 +15,7 @@ pais = input('Que país quiere que esté centrado:\n--->')
 coords = []
 with open('covid_charts/datos/paises.json',mode='r',encoding='utf8') as f:
     coords = json.load(f)[pais]
-m = Basemap(projection='nsper',lon_0=coords[0],lat_0=coords[1],satellite_height=3000*1000,resolution='l')
+m = Basemap(projection='nsper',lon_0=coords[0],lat_0=coords[1],satellite_height=3000*10000,resolution='l')
 
 m.drawcoastlines()
 m.drawcountries(color='red')
