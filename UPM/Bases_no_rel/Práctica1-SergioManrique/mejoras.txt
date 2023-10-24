@@ -1,0 +1,2 @@
+Se han añadido más etiquetas con algunas conteniendo atributos.
+En el xsd se ha añadido muchas restricciones tanto de valores mínimos y máximos, mínimas y máximas occurencias, restricciones de patrones regex.

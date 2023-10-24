@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema targetNamespace='https://upm.es/viaje'
+    xmlns:tns='https://upm.es/viaje'
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault='qualified'>
+    <xs:element name='viaje'>   
+        <xs:complexType>
+            <xs:all>
+                <xs:element name='datos'>
+                    <xs:complexType>
+                        <xs:all>
+                            <xs:element name="fecha-inicio" type="xs:date"/>
+                            <xs:element name="fecha-fin" type="xs:date"/> 
+                        </xs:all>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name='viajeros'>
+                    <xs:complexType>
+                        <xs:sequence minOccurs="1" maxOccurs="10">
+                            <xs:element name="viajero" type="tns:viajerosinfo"/>
+                        </xs:sequence>
+                    </xs:complexType>   
+                </xs:element>
+                <xs:element name='paises'>
+                    <xs:complexType>
+                        <xs:sequence maxOccurs="10">
+                            <xs:element name='pais'>
+                                <xs:complexType>
+                                    <xs:all>
+                                        <xs:element name='nombre' type="xs:string" />
+                                        <xs:element name='numero-ciudades-visitadas' type="xs:int"/>
+                                        <xs:element name="poblacion" type="xs:double"/>
+                                    </xs:all>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name='kilometros-viajados'>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:decimal">
+                            <xs:minInclusive value="0"/>
+                            <xs:fractionDigits value="2"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>               
+                <xs:element name='hoteles'>
+                    <xs:complexType>
+                        <xs:sequence minOccurs="1" maxOccurs="10">
+                            <xs:element name="hotel">
+                                <xs:complexType>
+                                    <xs:all>
+                                        <xs:element name="nombre"/>
+                                        <xs:element name="precio-noche" type="xs:decimal"/>
+                                        <xs:element name="personas-habitacion">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:int">
+                                                    <xs:minExclusive value="0"/>
+                                                    <xs:maxInclusive value="4"/>
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="ciudad"/>
+                                    </xs:all>
+                                    <xs:attribute name="pais" use="required" /> 
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="viajerosinfo">
+        <xs:sequence>
+            <xs:element name="nombre-viajero" type="xs:string"/>
+            <xs:element name="DNI">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:pattern value="[0-9]{8}[A-Z]"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="fecha-nacimiento" type="xs:date"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

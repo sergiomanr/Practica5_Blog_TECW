@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<viaje xmlns="https://upm.es/viaje"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://upm.es/viaje viaje.xsd"
+    >
+     
+    <datos>
+        <fecha-inicio>2023-07-23</fecha-inicio>
+        <fecha-fin>2023-08-20</fecha-fin>
+    </datos>
+    <viajeros>
+        <viajero>
+            <nombre-viajero>Pepe Luis</nombre-viajero>
+            <DNI>03036574J</DNI>
+            <email>pepeperesluis@gmail.com</email>
+            <fecha-nacimiento>1974-09-30</fecha-nacimiento>
+        </viajero>
+        <viajero>
+            <nombre-viajero>Jose Luis Botella</nombre-viajero>
+            <DNI>04568768A</DNI>
+            <email>jluisbotella@gmail.com</email>
+            <fecha-nacimiento>1986-10-08</fecha-nacimiento>
+        </viajero>
+        <viajero>
+            <nombre-viajero>Mario García</nombre-viajero>
+            <DNI>75308418P</DNI>
+            <email>mario12garcia@hotmail.com</email>
+            <fecha-nacimiento>2010-04-22</fecha-nacimiento>
+        </viajero>
+        <viajero>
+            <nombre-viajero>Lucia Pérez Fernandez</nombre-viajero>
+            <DNI>96482675G</DNI>
+            <email>luperezfer@gmail.com</email>
+            <fecha-nacimiento>1990-12-02</fecha-nacimiento>
+        </viajero>
+    </viajeros>
+    <paises>
+        <pais>
+            <nombre>Austria</nombre>
+            <numero-ciudades-visitadas>2</numero-ciudades-visitadas>
+            <poblacion>8956000</poblacion>
+        </pais>
+        <pais>
+            <nombre>Hungría</nombre>
+            <numero-ciudades-visitadas>1</numero-ciudades-visitadas>
+            <poblacion>9710000</poblacion>
+        </pais>
+    </paises>
+    <kilometros-viajados>2022.56</kilometros-viajados>
+    <hoteles>
+        <hotel pais='Austia'>
+            <nombre>Four Seasons Austria</nombre>
+            <precio-noche>1500</precio-noche>
+            <personas-habitacion>2</personas-habitacion>
+            <ciudad>Vienna</ciudad>
+        </hotel>
+        <hotel pais='Austia'>
+            <nombre>Best Western Plus Plaza Hotel Graz</nombre>
+            <precio-noche>120.12</precio-noche>
+            <personas-habitacion>3</personas-habitacion>
+            <ciudad>Graz</ciudad>
+        </hotel>
+        <hotel pais='Hungría'>
+            <nombre>FOUR SEASONS HOTEL GRESHAM PALACE BUDAPEST</nombre>
+            <precio-noche>750.62</precio-noche>
+            <personas-habitacion>4</personas-habitacion>
+            <ciudad>Budapest</ciudad>
+        </hotel>
+    </hoteles>
+</viaje>

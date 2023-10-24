@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace='https://upm.es/tweeter'
+    xmlns:tns='https://upm.es/xmlns/tweeter'
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault='qualified'>
+    <xs:element name='tweeter'>
+        <xs:complexType>
+            <xs:all>
+                <xs:element name='usuario'>
+                        <xs:complexType>
+                            <xs:all>
+                                <xs:element name='nombre'></xs:element>
+                            </xs:all>
+                        </xs:complexType>
+                </xs:element>
+                <xs:element name='tweets'>
+                    <xs:complexType>
+                        <xs:all>
+                            <xs:element name='tweet'>
+                                <xs:complexType>
+                                    <xs:all>
+                                        <xs:element name='contenido'></xs:element>
+                                    </xs:all>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:all>
+                    </xs:complexType>
+                </xs:element>
+            
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
