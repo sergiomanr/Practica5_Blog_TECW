@@ -29,7 +29,7 @@ for ms,bs in zip(m_list,Bs):
     ecuacion = -0.9 + (bs**9*(1/bs-(x**(ms+1)/ms+1)+(x**(ms+2)/ms+2))**9*bs*((x**(ms+1)/ms+1)-(x**(ms+2)/ms+2)))*10 + (bs*(1/bs-(x**(ms+1)/ms+1)+(x**(ms+2)/ms+2)))
     print(solve(ecuacion))
 # %% Funcion de b
-k = 9
+k = 5
 
 # Algoritmo terminado
 # frecuencia < 0.9
@@ -52,9 +52,10 @@ for muestra_de_m,m_selec in zip(muestras_X_por_m,m_list):
         frecuencia = contador/(len(muestra_de_m)/10)
         
         if frecuencia >= 0.9:
-                print(f'La b para que la Fr de {m_selec} sea {frecuencia} ~ 0.9 es: ',b)
+                print(f'La b para que la Fr de {m_selec} sea {frecuencia} ~ 0.9 es: ',round(b,4))
                 break
         else:
+            # b -= (0.9-frecuencia)/15
             b -= 0.005
             continue
 print('Tiempo', time.time()-start)
