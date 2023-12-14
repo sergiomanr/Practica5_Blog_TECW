@@ -38,11 +38,10 @@ def pintar_histograma(muestras, titulo='Histograma', bins=0):
     plt.show()
 
 
-def pintar_lineas(frecuencia_relativa, labels, titulo='Frecuencias relativas de trayectos de k paradas'):
+def pintar_lineas(rango,frecuencia_relativa, labels, titulo='Frecuencias relativas de trayectos de k paradas'):
     for f, l in zip(frecuencia_relativa, labels):
-        plt.plot(f, label=l)
+        plt.plot(rango,f, label=l)
     plt.legend()
-    plt.xticks(np.arange(len(frecuencia_relativa[0])))
     plt.title(titulo)
     plt.show()
 
@@ -90,143 +89,157 @@ for i in range(n_desplazamientos):
         paradas_res.append(random.exponential(3))
     else:
         D_residentes.append(paradas_res)
+        
     paradas_vis = []
     for e in range(N_visitantes[i]):
         paradas_vis.append(random.exponential(3))
     else:
         D_visitantes.append(paradas_vis)
 
-# D_residentes_sumado = []
-# D_visitantes_sumado = []
-# for i in range(n_desplazamientos):
+D_residentes_sumado = []
+D_visitantes_sumado = []
 
-#     paradas_res = 0
-#     for i in range(random.poisson(1)):
-#         paradas_res += random.exponential(3)
-#     else:
-#         D_residentes_sumado.append(paradas_res)
-#     paradas_vis = 0
-#     for i in range(random.poisson(4)):
-#         paradas_vis += random.exponential(3)
-#     else:
-#         D_visitantes_sumado.append(paradas_vis)
+for a, b in zip(D_residentes, D_visitantes):
+    D_residentes_sumado.append(sum(a))
+    D_visitantes_sumado.append(sum(b))
 
 
 # %% APARTADO B
 #Apartado B
-# lista_desp_sumado = D_visitantes_sumado[:20000]+D_residentes_sumado[20000:]
-lista_desp = D_visitantes[:20000] + D_residentes[:80000]
-lista_combinada = ['v'] * 20000 + ['r']*80000
+lista_desp_sumado = D_visitantes_sumado[:int(n_desplazamientos/5)]+D_residentes_sumado[:int(n_desplazamientos*4/5)]
+lista_desp = D_visitantes[:int(n_desplazamientos/5)] + D_residentes[:int(n_desplazamientos*4/5)]
+lista_combinada = ['v']*int(n_desplazamientos/5) + ['r']*int(n_desplazamientos*4/5)
 
 
 # %% APARTADO C
 #Apartado C
 fr_trayectos_k_paradas = [[], [], []]
-rango = range(max(max(N_residentes),max(N_visitantes)))
+rango = range(max(max(N_residentes),max(N_visitantes))+1)
 
 for k in rango:
     frecuencia_rel_residentes = 0
     frecuencia_rel_visitantes = 0
     frecuencia_relativa_total = 0
-    contador_res = 0
-    contador_vis = 0
-
     for tiempos,viajero in zip(lista_desp,lista_combinada):
         if len(tiempos) == k:
 
             if viajero == 'v':
-                contador_vis += 1
-                frecuencia_rel_visitantes += sum(np.asanyarray(tiempos))
+                frecuencia_rel_visitantes += 1
             else:
-                contador_res += 1
-                frecuencia_rel_residentes += sum(np.asanyarray(tiempos))
-    frecuencia_relativa_total = frecuencia_rel_residentes + frecuencia_rel_visitantes
-    contador_tot = contador_vis +contador_res
-    # print('\n K = ' + str(k) + ' paradas')
-    # print('Frecuencia relativa de trayectos de ' + str(k) + ' paradas (residentes): ' + str(frecuencia_rel_residentes/(1 if contador_res == 0 else contador_res)))
-    # print('Frecuencia relativa de trayectos de ' + str(k) + ' paradas (visitantes): ' + str(frecuencia_rel_visitantes/(1 if contador_vis == 0 else contador_vis)))
-    # print('Frecuencia relativa de trayectos de ' + str(k) + ' paradas (total): ' + str(frecuencia_relativa_total/(1 if contador_tot == 0 else contador_tot)))
+                frecuencia_rel_residentes += 1
 
-    fr_trayectos_k_paradas[0].append(frecuencia_rel_residentes)
-    fr_trayectos_k_paradas[1].append(frecuencia_rel_visitantes)
-    fr_trayectos_k_paradas[2].append(frecuencia_relativa_total)
+    frecuencia_relativa_total = frecuencia_rel_residentes + frecuencia_rel_visitantes
+    print('\n K = ' + str(k) + ' paradas')
+    print('Frecuencia relativa de trayectos de ' + str(k) + ' paradas (residentes): ' + str(frecuencia_rel_residentes/n_desplazamientos))
+    print('Frecuencia relativa de trayectos de ' + str(k) + ' paradas (visitantes): ' + str(frecuencia_rel_visitantes/n_desplazamientos))
+    print('Frecuencia relativa de trayectos de ' + str(k) + ' paradas (total): ' + str(frecuencia_relativa_total/n_desplazamientos))
+
+    fr_trayectos_k_paradas[0].append(frecuencia_rel_residentes/n_desplazamientos)
+    fr_trayectos_k_paradas[1].append(frecuencia_rel_visitantes/n_desplazamientos)
+    fr_trayectos_k_paradas[2].append(frecuencia_relativa_total/n_desplazamientos)
 
     # plot de las frecuencias relativas
-pintar_lineas(frecuencia_relativa=fr_trayectos_k_paradas ,labels=['Residentes','Visitantes','Total'])
+pintar_lineas(rango,frecuencia_relativa=fr_trayectos_k_paradas ,labels=['Residentes','Visitantes','Total'])
 
 
 # %% APARTADO D
 #Apartado D
-for hist in fr_trayectos_k_paradas:
-    pintar_histograma(hist,bins=max(max(N_residentes),max(N_visitantes)))
+
+# pintar_histograma(fr_trayectos_k_paradas,bins=max(max(N_residentes),max(N_visitantes)))
+pintar_histograma(fr_trayectos_k_paradas, bins=15)
 
 # %% APARTADO E
 #Apartado E
 suma_trayectos = []
-for tray,viajero in zip(lista_desp,lista_combinada):
+for desp,viajero in zip(lista_desp_sumado,lista_combinada):
    
     if viajero == 'r':
-        suma_trayectos.append(sum(np.asanyarray(tray)))
+        suma_trayectos.append(desp)
+        
 else:
     print(np.mean(suma_trayectos))
-    print(np.std(suma_trayectos))
-
+    print(np.var(suma_trayectos))
 
 # %% APARTADO F
 # Apartado F
 
-pintar_histograma(fr_trayectos_k_paradas[0],bins=max(max(N_residentes),max(N_visitantes)))
+pintar_histograma(suma_trayectos,bins=int(max(D_residentes_sumado)))
 
 # %% APARTADO G
-
+# Apartado G
 suma_trayectos_vis = []
-for tray,viajero in zip(lista_desp,lista_combinada):
+for desplazamiento,viajero in zip(lista_desp_sumado,lista_combinada):
    
     if viajero == 'v':
-        suma_trayectos_vis.append(sum(np.asanyarray(tray)))
+        suma_trayectos_vis.append(desplazamiento)
 else:
     print(np.mean(suma_trayectos_vis))
-    print(np.std(suma_trayectos_vis))
+    print(np.var(suma_trayectos_vis))
+
+pintar_histograma(suma_trayectos_vis,bins=int(max(D_visitantes_sumado)))
 
 # %% APARTADO H
 # Apartado H
 
-pintar_histograma_conjunto(np.arange(max(max(N_residentes),max(N_visitantes))),fr_trayectos_k_paradas[0],bins=16)
+lista_H = []
+for i in range(n_desplazamientos):
+    lista_H.append(len(lista_desp[i]))
+
+pintar_histograma_conjunto(lista_H,lista_desp_sumado,bins=max(max(N_residentes),max(N_visitantes)))
 
 # %% APARTADO I
+# Apartado I
+lista_I = []
+for i in range(n_desplazamientos):
+    lista_I.append(len(D_visitantes[i]))
 
-for tipo in fr_trayectos_k_paradas[:2]:
-    pintar_histograma_conjunto(np.arange(len(tipo)),tipo, bins=16)
+
+pintar_histograma_conjunto(lista_H[20000:],lista_desp_sumado[20000:],titulo='Residentes', bins=25 )
+pintar_histograma_conjunto(lista_I,D_visitantes_sumado,titulo='Visitantes', bins=25 )
+
 
 # %% APARTADO J
-
+# Apartado J
 
 
 # %% APARTADO K
-base = 3
+# Apartado K
+base = 2
 
+valores_paradas = []
 precio = []
 for i in range(n_desplazamientos):
-    valor = 1+len(lista_desp[i])
-    precio.append(np.emath.logn(base,valor))
+    valores_paradas.append(len(lista_desp[i]))
+precio = np.emath.logn(base, 1+np.asanyarray(valores_paradas))
+
 
 # %% APARTADO L
+# Apartado L
 
-pintar_histograma(precio, bins=10)
-print(np.mean(precio),np.var(precio))
+pintar_histograma(precio, bins=15)
+print('Media',np.mean(precio),'\nVarianza',np.var(precio))
 
 # %% APARTADO M
+# Apartado M
+lista_b = []
+medias_b = []
+varianza_b = []
 
-# pintar_lineas()
+for i in np.arange(0.0,3.0,0.1):
+    precio = np.emath.logn(i, 1+np.asanyarray(valores_paradas))
+    medias_b.append(np.mean(precio))
+    varianza_b.append(np.var(precio))
+
+lista_b = [medias_b] + [varianza_b]
+pintar_lineas(np.arange(0.0,3.0,0.1),frecuencia_relativa=lista_b, labels=['Media','Varianza','Precio'])
 
 # %% APARTADO N
+# Apartado N
+
 lista_N = []
 for i in range(n_desplazamientos):
     lista_N.append(len(lista_desp[i]))
-# %%
-# Apartado H
-import time
-star = time.time()
+
 b = 3
 a = 4
 while True:
@@ -239,30 +252,70 @@ while True:
         b -= (3-np.mean(precio_b))/a
         a += 0.5
         continue
-print('Tardó',time.time()-star)
+
 
 # %% APARTADO O
+# Apartado O
+transbordos = []
+numeros_de_transbordos = []
 
-...
+for traye in lista_desp:
+    if len(traye) >= 2:
+        traye_transbordos = []
+        contador_parada = 0
+
+        for parada in traye[:-1]:
+            if np.random.random() >= 3/4:
+                traye_transbordos.append(np.random.uniform(0,9))
+                contador_parada +=1
+        if len(traye_transbordos) == 0:
+            transbordos.append([0])
+        else:
+            transbordos.append(traye_transbordos)
+        numeros_de_transbordos.append(contador_parada)
+    else:
+        transbordos.append([0])
+        numeros_de_transbordos.append(0)
 
 # %% APARTADO P
+# Apartado P
 
-pintar_histograma_conjunto(...)
+pintar_histograma_conjunto(lista_N, numeros_de_transbordos,bins=20)
 
 # %% APARTADO Q
+# Apartado Q
+duraciones_transbordos = []
+for par,trsb in zip(lista_desp, transbordos):
+    suma_tot = sum(par)+sum(trsb)
+    duraciones_transbordos.append(suma_tot)
 
-...
+pintar_histograma_conjunto(duraciones_transbordos,lista_desp_sumado,bins=max(max(N_residentes),max(N_visitantes)))
 
-pintar_histograma_conjunto(...)
 
 # %% APARTADO R
+# Apartado R
 
-pintar_histograma(...)
+pintar_histograma(numeros_de_transbordos,bins=20)
+print('Media',np.mean(numeros_de_transbordos),'\nVarianza',np.var(numeros_de_transbordos))
 
 # %% APARTADO S
+# Apartado S
 
-...
+np.corrcoef(lista_N, numeros_de_transbordos)[0, 1]
 
+# No es mucho ya que solo tenemos un 25% se prob de meter un transbordo y por eso no es tan alto
 # %% APARTADO T
+# Apartado T
+duracion_solo_transbordos = []
 
-...
+for trasb, desplaz in zip(numeros_de_transbordos,lista_desp):
+    if trasb > 0: 
+        sumatorio_t = [np.random.uniform(0,9) for _ in range(trasb)]
+        duracion_solo_transbordos.append(sum(sumatorio_t)+sum(desplaz))
+
+print('Media con todos los trayectos incluyendo los transbordos',np.mean(duraciones_transbordos))
+print('Media solo con los viajes que tienen al menos un transbordo',np.mean(duracion_solo_transbordos))
+print('Media de los desplazamientos sin transbordos',np.mean(suma_trayectos))
+
+
+# %%
