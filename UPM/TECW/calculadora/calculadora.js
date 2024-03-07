@@ -1,7 +1,6 @@
 const leerPantalla = () => document.getElementById('pantalla').value;
 const escribirPantalla = v => document.getElementById('pantalla').value = v;
 
-// var igual = document.getElementById('boton_igual')
 
 var num1 = 0;
 var operador = '';
