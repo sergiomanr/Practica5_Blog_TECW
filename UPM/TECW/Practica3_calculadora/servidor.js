@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-app.listen(3001,() => {
+app.listen(3000,() => {
     console.log('Servidor activo')
 });
 
@@ -29,12 +29,12 @@ function factorial(req, res, next) {
 }
 
 function raiz(req, res, next) {
-    var sol = Math.round(Math.sqrt(req.body.numero) * 1000) / 1000;
+    let sol = Math.round(Math.sqrt(req.body.numero) * 1000) / 1000;
     res.send(sol.toString());
 }
 
 function cuadrado(req, res, next) {
-        var sol = Math.pow(req.body.numero,2);
+        let sol = Math.pow(req.body.numero,2);
         res.send(sol.toString());
 }
     
