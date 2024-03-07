@@ -25,7 +25,6 @@ function factorial(req, res, next) {
     for (let i = 2; i <= num ; i++) {
         sol *= i
     }
-    console.log('Solución es',sol);
     res.send(sol.toString());
 }
 
