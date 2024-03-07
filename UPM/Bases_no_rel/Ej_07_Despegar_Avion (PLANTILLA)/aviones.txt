@@ -1,0 +1,14 @@
+Vip tiene prioridad ante no Vip, dos Vip no pueden despegar seguidos si hay un no Vip esperando
+
+Bloqueantes y Desbloqueantes:
+    -DespegarAvion (B): Cuando no haya pasado el tiempo o haya un VIP esperando
+    -DespegarVIP (B): Cuando no haya pasado el tiempo o justo antes haya salido un VIP
+    -FinTemporizador (D)
+
+VIP: no hay nadie, hay solo normal y antes no VIP, hay VIP y no normal 
+Normal: no hay VIP, hay VIP pero antes a salido VIP 
+
+Bloqueante:
+
+VIP: antes VIP y normal esperando, tiempo
+Normal: hay VIP y antes no VIP, tiempo, 

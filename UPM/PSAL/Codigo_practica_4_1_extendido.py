@@ -38,6 +38,7 @@ def pintar_histograma(muestras, titulo='Histograma', bins=0):
         bins = range(int(min(muestras)), int(max(muestras)) + 2)
     plt.hist(muestras, bins=bins)
     plt.title(titulo)
+    plt.xticks([1,2,3,4])
     plt.show()
 
 
@@ -251,7 +252,7 @@ lista = np.asarray(lista)
 
 
 # %% APARTADO C
-muestras = 10000
+muestras = 100000
 m_ar_0 = np.random.randint(low=1,high=5,size=muestras)
 m_ar = []
 
@@ -272,7 +273,6 @@ contador_1 = 0
 frecuencia_12 = 0
 frecuencia_123 = 0
 mas_probable = {}
-general = {}
 
 for e in lista:
     if e[0] == 1:
@@ -293,33 +293,33 @@ for e in lista:
         if e[2] not in mas_probable:
             mas_probable[e[2]] = 0
         mas_probable[e[2]] += 1
-    if e[0] not in general:
-        general[e[0]] = 0
-    general[e[0]] += 1
 
-
-print('Frecuencia relativa de (M1,M2) es:',frecuencia_12/contador_1)
-print('Frecuencia relativa de (M1,M2,M3) es:',frecuencia_123/contador_1)
+print('Frecuencia relativa de (M1,M2) es:',round(frecuencia_12/contador_1,4))
+print('Frecuencia relativa de (M1,M2,M3) es:',round(frecuencia_123/contador_1,4))
 print('Valor más probable en M[2] cuando M[0]=1 es:',max(mas_probable,key=mas_probable.get))
 
-# %% APARTADO F
+# %% 
+# APARTADO F
 pintar_histograma(lista, bins=4)
 pintar_histograma(lista_a,bins=4)
 
-# %% APARTADO G
-
+# %% 
+# APARTADO G
+k = 8
 canciones_a = []
-canciones = []
 canciones_m = []
+canciones = []
+
 for i in m_ar_0:
     arm = []
     mel = []
-    k = 8
+    unica = []
+
     A2 = i
     arm.append(A2)
     mel.append(0)
-    unica = []
     unica.append(A2)
+
     for e in range(k):
         m = np.random.choice((1,2,3,4),p=Tab3[A2-1])
         m1 = np.random.choice((1,2,3,4),p=Tab1[m-1])
@@ -327,13 +327,12 @@ for i in m_ar_0:
         A2 = np.random.choice((1,2,3,4),p=Tab2[A2-1])
         if e+1 == k:
             unica.extend([m, m1, m2])
-        else:
-            unica.extend([m, m1, m2, A2])
-    
-        if e+1 == k:
+
             mel.extend([ m, m1, m2])
             arm.extend([0, 0, 0])
         else:
+            unica.extend([m, m1, m2, A2])
+
             mel.extend([ m, m1, m2, 0])
             arm.extend([0, 0, 0, A2])
 
@@ -341,55 +340,43 @@ for i in m_ar_0:
     canciones_m.append(mel)
     canciones.append(unica)
 
-# %% APARTADO H
+# %% 
+    # APARTADO H
 contador = 0
-contador_2 = 0
-arm_comun = {}
 for armo,melo in zip(canciones_a,canciones_m):
-    # for a in range(0,len(armo),4):
-    #     if [armo[a],melo[a+1],melo[a+2],melo[a+3]] == [1,1,2,3]:
-    #         contador += 1
-    #     if [melo[a+1],melo[a+2],melo[a+3]] == [1,2,3]:
-    #         contador_2 += 1 
-    #         if armo[a] not in arm_comun:
-    #             arm_comun[armo[a]] = 0
-    #         arm_comun[armo[a]] +=1
     if [armo[0],melo[1],melo[2],melo[3]] == [1,1,2,3]:
         contador += 1
+    
+print('La frecuencia relativa de que salga A1, M1, M2, M3 es:',contador/10000)
+
+# %% 
+# APARTADO I
+arm_comun = {}
+
+for armo,melo in zip(canciones_a,canciones_m):
     if [melo[1],melo[2],melo[3]] == [1,2,3]:
-        contador_2 += 1 
         if armo[0] not in arm_comun:
             arm_comun[armo[0]] = 0
         arm_comun[armo[0]] +=1
 
-print(max(arm_comun,key=arm_comun.get), arm_comun)
-print('La frecuencia relativa de que salga A1, M1, M2, M3 es:',contador/10000)
-
-# %% APARTADO I
-
-
+print('La armonia más común para la secuencia dada es:',max(arm_comun,key=arm_comun.get))
 # %% APARTADO J
-def flatten_concatenation(matrix):
-    flat_list = []
-    for row in matrix:
-        flat_list += row
-    return flat_list
-melodia = flatten_concatenation(canciones_m)
-armonia = flatten_concatenation(canciones_a)
-# np.correlate(np.asanyarray(canciones).flatten(),np.asanyarray(canciones).flatten(), mode='full')
-print(np.correlate(canciones_a[0],canciones_m[0],mode='full'),'\n',np.corrcoef(canciones_a[0],canciones_m[0]))
+canciones_a = np.asarray(canciones_a)
+canciones_m = np.asarray(canciones_m)
+
+print('Autocorrelación Melodias\n',np.correlate(canciones_m[0],canciones_m[0],mode='full'),'\n')
+print('Autocorrelación Armonías\n',np.correlate(canciones_a[0],canciones_a[0],mode='full'),'\n')
+print(np.corrcoef(canciones_a[0],canciones_m[0]))
 
 # %% APARTADO K
 import csv
+fs = 8000
+L = 4
 z = sintetizador_secuencias(transformador_armonia(np.asanyarray(canciones_a[0])),transformador_melodia(np.asanyarray(canciones_m[0])),fs,L)
 
-# Almacenamos el resultado en fichero de audio
 almacenar_audio('secuencia.wav',z,fs)
 
 with open('secuencia.csv',mode='w', encoding='utf8') as f:
-    csv_wr = csv.writer(f,delimiter=',')
+    csv_wr = csv.writer(f,delimiter=';')
     csv_wr.writerow(canciones[0])
 
-# Reproducimos
-reproducir_secuencia(z,fs)
-# %%
