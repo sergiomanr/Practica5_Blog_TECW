@@ -1,4 +1,4 @@
-const Sequelize = require('Sequelize')
+const Sequelize = require('sequelize')
 
 const sequelize = new Sequelize('blog.sqlite','root','12345', {
     host: 'localhost',
