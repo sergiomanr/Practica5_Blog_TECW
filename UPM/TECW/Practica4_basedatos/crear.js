@@ -4,7 +4,8 @@ const sequelize = new Sequelize('blog.sqlite','root','12345', {
     host: 'localhost',
     port: '5000',
     dialect: 'sqlite'
-})
+});
+
 
 sequelize.sync()
 
@@ -31,7 +32,7 @@ const Posts = sequelize.define('Posts',{
     attachmentId: {
         type: Sequelize.INTEGER,
     }   
-        },{
+    },{
     tableName: 'Posts'        
     }
 )
@@ -63,9 +64,13 @@ const Attachments = sequelize.define('Attachments',{
 )
 
 Posts.hasOne(Attachments, {
-    foreignKey: attachmentId,
+    foreignKey: 'attachmentId',
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
 })
 
-
+module.exports = {
+    Posts,
+    Attachments,
+    sequelize, // Export the sequelize instance
+  };
