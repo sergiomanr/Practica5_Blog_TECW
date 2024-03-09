@@ -6,13 +6,10 @@ body {
     height: 100vh;
     background-color: grey;
 }
-head {
-    background-color: yellow;
-}
+
 #info {
     padding: 0px;
     margin: 10px;
-    /* background-color: blue; */
     color: white;
     max-width: 95%;
 }
@@ -38,7 +35,6 @@ head {
     border-radius: 50%;
     border: 0px;
     transition: transform 0.05s ease;
-    /* box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); */
     background-color:  rgba(128, 128, 128, 0.2);
     color: lightgreen;
 }

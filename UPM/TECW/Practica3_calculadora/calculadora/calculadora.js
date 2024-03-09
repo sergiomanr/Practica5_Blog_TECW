@@ -2,9 +2,9 @@ const leerPantalla = () => document.getElementById('pantalla').value;
 const escribirPantalla = v => document.getElementById('pantalla').value = v;
 
 
-var num1 = 0;
-var operador = '';
-var llave = false;
+let num1 = 0;
+let operador = '';
+let llave = false;
 let boton_C = document.getElementById('clear');
 let boton_AC = document.getElementById('acumulated_clear');
 
@@ -19,6 +19,7 @@ let boton_AC = document.getElementById('acumulated_clear');
 //         for (let i = 2; i <= num ; i++) {
 //             sol *= i
 //         }
+        //  escribirPantalla(sol);
 // }
 
 // function sq() {
@@ -36,7 +37,7 @@ let boton_AC = document.getElementById('acumulated_clear');
 // }}
 
 function fact() {
-    var num = leerPantalla();
+    let num = leerPantalla();
     if (validar(leerPantalla())) {
 
         fetch('/factorial', {
@@ -49,7 +50,7 @@ function fact() {
 
 
  function sq() {
-    var num = leerPantalla();
+    let num = leerPantalla();
     if (validar(num)) {
         fetch('/cuadrado', {
                             method: "POST",
@@ -59,7 +60,7 @@ function fact() {
     }   
 }
 function sqr(){
-    var num = leerPantalla()
+    let num = leerPantalla()
     if (validar(num)) {
         console.log('Entramos en raiz de calc.js con %d',num);
         fetch('/raiz', {
