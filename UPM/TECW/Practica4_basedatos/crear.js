@@ -3,11 +3,11 @@ const Sequelize = require('sequelize')
 const sequelize = new Sequelize('blog', 'root', '', {
     dialect: 'sqlite',
     storage: './blog.sqlite',
-    logging: false
+    // logging: false
   });
 
 
-sequelize.sync({ force: true });
+sequelize.sync();
 
 const Posts = sequelize.define('Posts',{
     id : {
@@ -68,7 +68,7 @@ Posts.hasOne(Attachments, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE'
 })
-
+Attachments.belongsTo(Posts)
 
 // (async () => {
 //     try {

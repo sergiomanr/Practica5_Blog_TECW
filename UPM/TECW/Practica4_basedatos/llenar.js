@@ -27,7 +27,7 @@ function foto(receta) {
 const llenar = async () => {
     // fs.readFile('./recipes.json', 'utf-8',(err, data) => {
     try {
-        await sequelize.sync({force: false})
+        await sequelize.sync({force: true});
         const Recetas = JSON.parse(await fs.promises.readFile('./recipes.json', 'utf-8'));
         // await sequelize.Transaction(async (transaction) => {
         for (let receta of Recetas) {
