@@ -1,6 +1,5 @@
 const fs = require('fs');
 const { Posts, Attachments, sequelize } = require('./crear');
-// const sequelize = require('sequelize');
 
 function rellenar_body(ingr, steps) {
     let body = '\n# Ingredientes'
@@ -17,7 +16,7 @@ function rellenar_body(ingr, steps) {
 function foto(receta) {
     
     if (receta.photo){
-        return receta.photo
+        return `./images/${receta.photo}`
     } else {
         return '/none.jpg'
     }
@@ -25,44 +24,23 @@ function foto(receta) {
 }
 
 const llenar = async () => {
-    // fs.readFile('./recipes.json', 'utf-8',(err, data) => {
     try {
         await sequelize.sync({force: true});
         const Recetas = JSON.parse(await fs.promises.readFile('./recipes.json', 'utf-8'));
-        // await sequelize.Transaction(async (transaction) => {
         for (let receta of Recetas) {
                 const nuevoAttachments = await Attachments.create({
                     mime: receta.mime,
                     url: foto(receta)
                 })
-                // await nuevoAttachments.save();
 
                 const nuevoPost = await Posts.create({
                     title: receta.title,
                     body: rellenar_body(receta.ingredients, receta.steps),
                     attachmentId: nuevoAttachments.id
                 });
-
-                // const nuevoAttachments = await Attachments.create({
-                //     mime: receta.mime,
-                //     url: foto(receta)
-                //   }, { transaction });
-
-                // const nuevoPost = await Posts.create({
-                //     title: receta.title,
-                //     body: rellenar_body(receta.ingredients, receta.steps),
-                //     attachmentId: nuevoAttachments.id
-                //   }, { transaction });
-                
-                console.log(nuevoPost.attachmentId, nuevoAttachments.url)
-                
-                // await nuevoPost.save();
         }
-    // });
     } catch (error) {
         console.log(`Upsi ha habido un error ${error}  `)
     }
-    // })
-
 }
 llenar();

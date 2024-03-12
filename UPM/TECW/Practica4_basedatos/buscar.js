@@ -13,8 +13,11 @@ async function buscar(args) {
     } else if (args.length == 2) {
         let posts = await Posts.findAll({
             attributes: ['id','title']
-        })
-        console.log(posts)
+        });
+        posts.forEach(post => {
+            console.log(`Id: ${post.id}, Title ${post.title}`)
+            
+        });
     } 
     else  {
         let arg_limp = args[2].replace('[','').replace(']','');
@@ -25,10 +28,10 @@ async function buscar(args) {
             console.log(post.id);
             console.log(post.title);
             console.log(post.body);
-            console.log(post.updatedAt);
-            console.log(post.attachmentId);
+            console.log(post.updatedAt,'\n');
+            console.log(attachment.mime,'\n');
             try {
-                console.log(attachment.url);
+                console.log(attachment.url,'\n');
             } catch (error) {
                 console.log('')
             }
