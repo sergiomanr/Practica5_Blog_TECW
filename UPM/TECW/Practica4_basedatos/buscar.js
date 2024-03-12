@@ -1,10 +1,5 @@
 const { Posts, Attachments, sequelize } = require('./crear');
-
-
-
 const args = process.argv;
-// console.log(args[2][0])
-
 
 async function buscar(args) {
     await sequelize.sync()
