@@ -10,7 +10,7 @@ async function buscar(args) {
             attributes: ['id','title']
         });
         posts.forEach(post => {
-            console.log(`Id: ${post.id}, Title ${post.title}`)
+            console.log(`Id: ${post.id}, Title: ${post.title}`)
             
         });
     } 
@@ -25,9 +25,9 @@ async function buscar(args) {
             console.log(post.body);
             console.log(post.updatedAt,'\n');
             console.log(attachment.mime,'\n');
-            try {
+            if (attachment.url) {
                 console.log(attachment.url,'\n');
-            } catch (error) {
+            } else {
                 console.log('')
             }
 
