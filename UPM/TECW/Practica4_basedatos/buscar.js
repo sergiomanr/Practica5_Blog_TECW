@@ -20,13 +20,13 @@ async function buscar(args) {
             
             let post =  await Posts.findByPk(Number(arg_limp));
             let attachment = await Attachments.findByPk(post.attachmentId);
-            console.log(post.id);
-            console.log(post.title);
-            console.log(post.body);
-            console.log(post.updatedAt,'\n');
-            console.log(attachment.mime,'\n');
+            console.log('ID:',post.id);
+            console.log('Title:',post.title);
+            console.log('Cuerpo:',post.body);
+            console.log('Fecha modificación:',post.updatedAt,'\n');
+            console.log('Mime:',attachment.mime,'\n');
             if (attachment.url) {
-                console.log(attachment.url,'\n');
+                console.log('Url:',attachment.url,'\n');
             } else {
                 console.log('')
             }

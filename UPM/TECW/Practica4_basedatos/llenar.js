@@ -40,7 +40,7 @@ const llenar = async () => {
                 });
         }
     } catch (error) {
-        console.log(`Upsi ha habido un error ${error}  `)
+        console.log(`Ha habido un error ${error}`)
     }
 }
 llenar();
