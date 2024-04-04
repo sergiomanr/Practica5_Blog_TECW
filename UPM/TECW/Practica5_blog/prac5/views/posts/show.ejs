@@ -1,0 +1,9 @@
+<h1>Show Post</h1>
+
+<h2><%= post.title %></h2>
+<!-- <img src="/posts/<%= post.id %>/attachment" alt="Imagen del post" class="attachment"> -->
+<%- include ('../attachments/attachment') %>
+<p><%=post.body%></p>
+<a href="/posts/<%= post.id %>/edit">Editar</a>
+<a href="/posts/<%= post.id %>/delete">Eliminar</a>
+<a href="/posts">Volver</a>
