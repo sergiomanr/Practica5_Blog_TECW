@@ -5,5 +5,7 @@
 <%- include ('../attachments/attachment') %>
 <p><%=post.body%></p>
 <a href="/posts/<%= post.id %>/edit">Editar</a>
-<a href="/posts/<%= post.id %>/delete">Eliminar</a>
+<a href="/posts/<%= post.id %>?_method=DELETE"
+    onClick="return confirm('Delete: <%= post.question %>');"
+    class="button">Delete</a>
 <a href="/posts">Volver</a>

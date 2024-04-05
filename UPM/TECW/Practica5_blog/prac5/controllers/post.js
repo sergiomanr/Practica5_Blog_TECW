@@ -1,6 +1,7 @@
 const {models} = require("../models");
 const createError = require('http-errors');
 const Sequelize = require("sequelize");
+const { post } = require("../routes");
 
 
 
@@ -107,5 +108,40 @@ exports.create = async (req, res, next) => {
     }
     
        
+    }
+   };
+
+exports.edit = (req, res, next) => {
+
+    const {post} = req.load;
+
+    res.render('posts/edit', {post});
+};
+
+exports.update = async (req, res, next) => {
+    const {post} = req.load;
+
+    post.title = req.body.title;
+    post.body = req.body.body;
+    try {
+        await post.save({fields: ["title", "body"]});
+        res.redirect('/posts/' + post.id);
+    } catch (error) {
+        if (error instanceof (Sequelize.ValidationError)) {
+            console.log('There are errors in the form:');
+            error.errors.forEach(({message}) => console.log(message));
+            res.render('posts/edit', {post});
+    } else {
+        next(error);
+    }
+    }
+   };
+
+exports.destroy = async (req, res, next) => {
+    try {
+        await req.load.post.destroy();
+        res.redirect('/posts');
+    } catch (error) {
+        next(error);
     }
    };
