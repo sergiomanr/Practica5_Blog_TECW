@@ -24,6 +24,12 @@ module.exports = {
         },
         attachmentId: {
             type: Sequelize.INTEGER,
+            onUpdate: 'CASCADE',
+            onDelete: 'SET NULL',
+            references: {
+                model: "Attachments",
+                key: "id"
+            },
         } 
     },
     {

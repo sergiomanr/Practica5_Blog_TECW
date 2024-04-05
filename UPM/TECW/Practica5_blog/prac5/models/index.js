@@ -7,11 +7,14 @@ const Attachments = require('./attachment')(sequelize);
 
 
 
-Posts.hasOne(Attachments, {
-    foreignKey: 'attachmentId',
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE'
-})
-Attachments.belongsTo(Posts)
+// Posts.hasOne(Attachments, {
+//     foreignKey: 'attachmentId',
+//     onDelete: 'CASCADE',
+//     onUpdate: 'CASCADE'
+// })
+// Attachments.belongsTo(Posts)
+
+Attachments.hasOne(Posts, {as: 'post', foreignKey: 'attachmentId'});
+Posts.belongsTo(Attachments, {as: 'attachment', foreignKey: 'attachmentId'});
 
 module.exports = sequelize;

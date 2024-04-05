@@ -6,7 +6,9 @@ module.exports = {
         id: {
             primaryKey: true,
             autoIncrement: true,
-            type: Sequelize.INTEGER
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            unique: true
         },
         createdAt: {
             type: Sequelize.DATE
@@ -27,12 +29,12 @@ module.exports = {
             allowNull: true
         }
     },
-    {
-    sync: {force: true}
-    }
-    );
+        {
+        sync: {force: true}
+        }
+    ); 
     },
     down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Attachments');
+        await queryInterface.dropTable('Attachments');
     }
 };
