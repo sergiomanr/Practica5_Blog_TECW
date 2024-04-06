@@ -1,2 +1,0 @@
-
-#     leer_fichero()
