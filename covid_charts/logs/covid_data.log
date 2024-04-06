@@ -1,8 +1,0 @@
-2023-02-05 11:57:53 - Covid Data - INFO -> Categorías disponibles para descargar:
-2023-02-05 11:57:53 - Covid Data - INFO -> - confirmed
-2023-02-05 11:57:53 - Covid Data - INFO -> - deaths
-2023-02-05 11:57:53 - Covid Data - INFO -> - recovered
-2023-02-05 11:58:02 - Covid Data - INFO -> Fichero guardado en ./datos/confirmed.csv
-2023-02-05 11:58:03 - Covid Data - INFO -> Fichero guardado en ./datos/deaths.csv
-2023-02-05 11:58:04 - Covid Data - INFO -> Fichero guardado en ./datos/recovered.csv
-2023-02-05 11:58:04 - Covid Data - INFO -> Índice de datos descargados guardado en index.json
